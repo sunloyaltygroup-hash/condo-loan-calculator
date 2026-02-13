@@ -24,7 +24,6 @@
         
         .section-title { font-weight: bold; color: var(--primary); margin: 20px 0 10px 0; display: flex; align-items: center; gap: 10px; font-size: 18px; }
         
-        /* ตารางสรุปรายได้ - ปรับให้แสดงผลชัดเจน */
         .income-summary-table {
             width: 100%;
             background: var(--highlight);
@@ -80,9 +79,11 @@
             <div class="input-group"><label>เดือนที่ 6</label><input type="number" class="inc-input" value="0" oninput="calculateAll()"></div>
         </div>
 
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px;">
-            <div class="input-group"><label>โบนัสรวมทั้งปี (บาท)</label><input type="number" id="bonus" value="0" oninput="calculateAll()"></div>
-            <div class="input-group"><label>ภาระหนี้/เดือน (บาท)</label><input type="number" id="debt" value="0" oninput="calculateAll()"></div>
+        <div style="margin-top: 15px;">
+            <div class="input-group">
+                <label>โบนัสรวมทั้งปี (บาท)</label>
+                <input type="number" id="bonus" value="0" oninput="calculateAll()">
+            </div>
         </div>
 
         <div class="income-summary-table">
@@ -144,14 +145,15 @@
         const bonus12 = bonusTotal / 12;
         const netIncome = avg6 + bonus12;
         
-        const debt = parseFloat(document.getElementById('debt').value || 0);
+        // กำหนดภาระหนี้เป็น 0 ตามความต้องการ
+        const debt = 0; 
         const condoPrice = parseFloat(document.getElementById('price').value || 0);
 
-        // แสดงผลสรุปรายได้ 4 ข้อ (Update ทันทีที่พิมพ์)
+        // แสดงผลสรุปรายได้ 4 ข้อ
         document.getElementById('disp-sum6').innerText = sum6.toLocaleString() + " บาท";
-        document.getElementById('disp-avg6').innerText = avg6.toLocaleString(undefined, {minimumFractionDigits: 2}) + " บาท";
-        document.getElementById('disp-bonus12').innerText = bonus12.toLocaleString(undefined, {minimumFractionDigits: 2}) + " บาท";
-        document.getElementById('disp-net').innerText = netIncome.toLocaleString(undefined, {minimumFractionDigits: 2}) + " บาท";
+        document.getElementById('disp-avg6').innerText = avg6.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) + " บาท";
+        document.getElementById('disp-bonus12').innerText = bonus12.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) + " บาท";
+        document.getElementById('disp-net').innerText = netIncome.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) + " บาท";
 
         // 2. คำนวณวงเงิน (ล้านละ 5000 + ตกแต่ง 10%)
         const abilityN = (netIncome * 0.5) - debt;
@@ -162,14 +164,17 @@
 
         // 3. แสดงผลวงเงินและเงินทอน
         document.getElementById('loan-n').innerText = Math.floor(loanN).toLocaleString() + " บาท";
-        document.getElementById('pay-n').innerText = "ผ่อนได้: " + Math.max(0, abilityN).toLocaleString() + " บ/ด";
+        document.getElementById('pay-n').innerText = "ผ่อนได้: " + Math.max(0, abilityN).toLocaleString(undefined, {maximumFractionDigits: 0}) + " บ/ด";
         
         document.getElementById('loan-w').innerText = Math.floor(loanW).toLocaleString() + " บาท";
-        document.getElementById('pay-w').innerText = "ผ่อนได้: " + Math.max(0, abilityW).toLocaleString() + " บ/ด";
+        document.getElementById('pay-w').innerText = "ผ่อนได้: " + Math.max(0, abilityW).toLocaleString(undefined, {maximumFractionDigits: 0}) + " บ/ด";
 
         if(condoPrice > 0) {
-            document.getElementById('cb-n').innerText = Math.max(0, loanN - condoPrice).toLocaleString();
-            document.getElementById('cb-w').innerText = Math.max(0, loanW - condoPrice).toLocaleString();
+            document.getElementById('cb-n').innerText = Math.max(0, Math.floor(loanN) - condoPrice).toLocaleString();
+            document.getElementById('cb-w').innerText = Math.max(0, Math.floor(loanW) - condoPrice).toLocaleString();
+        } else {
+            document.getElementById('cb-n').innerText = "0";
+            document.getElementById('cb-w').innerText = "0";
         }
     }
 
@@ -183,7 +188,6 @@
         }).from(element).save();
     }
     
-    // สั่งให้คำนวณครั้งแรกตอนโหลดหน้าเว็บ
     window.onload = calculateAll;
 </script>
 
