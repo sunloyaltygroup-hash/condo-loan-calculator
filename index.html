@@ -93,7 +93,6 @@
         .summary-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
         .summary-row:last-child { border-bottom: none; font-weight: bold; color: var(--accent-gold); font-size: 1.1em; padding-top: 15px; }
 
-        /* Selector Buttons */
         .dsr-selector {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -130,8 +129,8 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         .card-title { font-weight: bold; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; margin-bottom: 15px; display: block; color: var(--accent-gold); text-align: center; font-size: 1.2em; }
-        .loan-detail { font-size: 1em; margin: 10px 0; display: flex; justify-content: space-between; color: rgba(255,255,255,0.8); }
-        .amount-total { font-size: 36px; font-weight: bold; display: block; margin: 20px 0; text-align: center; color: white; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px; }
+        .loan-detail { font-size: 1.1em; margin: 10px 0; display: flex; justify-content: space-between; color: rgba(255,255,255,0.8); }
+        .amount-total { font-size: 42px; font-weight: bold; display: block; margin: 20px 0; text-align: center; color: white; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px; }
 
         .btn-pdf {
             width: 100%; padding: 18px; background: var(--gold-gradient); color: #000; border: none; border-radius: 15px;
@@ -188,10 +187,9 @@
 
         <div id="result-card" class="card" style="display: block;">
             <span class="card-title" id="res-title">CASE: พนักงานทั่วไป</span>
-            <div class="loan-detail"><span>วงเงินกู้หลัก:</span> <span id="base-val">0</span></div>
-            <div class="loan-detail"><span>ตกแต่ง (10%):</span> <span id="decor-val">0</span></div>
+            <div class="loan-detail"><span>ความสามารถผ่อนสูงสุด:</span> <span id="pay-val">0</span></div>
             <span class="amount-total" id="loan-total">0 บาท</span>
-            <div style="text-align:center; opacity: 0.6; font-size: 0.9em;">ผ่อนสูงสุด: <span id="pay-val">0</span>/ด.</div>
+            <p style="text-align:center; color: var(--accent-gold); font-size: 0.85em; margin-top: 5px;">* วงเงินกู้สูงสุดที่คาดว่าจะได้รับ</p>
         </div>
     </div>
 
@@ -228,15 +226,12 @@
         document.getElementById('bonus-avg').innerText = bonus12.toLocaleString(undefined, {minimumFractionDigits: 2}) + " บาท";
         document.getElementById('disp-net').innerText = netIncome.toLocaleString(undefined, {minimumFractionDigits: 2}) + " บาท";
 
+        // คำนวณวงเงินโดยตรง (ยอดที่ผ่อนได้ * 200) ไม่บวกตกแต่ง
         const ability = netIncome * currentDSR;
-        const base = Math.max(0, ability * 200);
-        const decor = base * 0.1;
-        const total = base + decor;
+        const totalLoan = Math.max(0, ability * 200);
 
-        document.getElementById('base-val').innerText = Math.floor(base).toLocaleString() + " บ.";
-        document.getElementById('decor-val').innerText = Math.floor(decor).toLocaleString() + " บ.";
-        document.getElementById('loan-total').innerText = Math.floor(total).toLocaleString() + " บาท";
-        document.getElementById('pay-val').innerText = Math.floor(ability).toLocaleString();
+        document.getElementById('loan-total').innerText = Math.floor(totalLoan).toLocaleString() + " บาท";
+        document.getElementById('pay-val').innerText = Math.floor(ability).toLocaleString() + " บ/ด";
     }
 
     function savePDF() {
@@ -244,7 +239,7 @@
         const element = document.getElementById('pdf-content');
         html2pdf().set({
             margin: 10,
-            filename: `Estimator_${cust}.pdf`,
+            filename: `Loan_Analysis_${cust}.pdf`,
             image: { type: 'jpeg', quality: 0.98 },
             html2canvas: { scale: 2, backgroundColor: '#0f0f0f' }, 
             jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
