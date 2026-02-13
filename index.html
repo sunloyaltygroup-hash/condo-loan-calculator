@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Maximum Loan Estimator - Luxury Selection</title>
+    <title>Maximum Loan Estimator - Luxury Edition</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -16,6 +16,8 @@
             --primary-text: #ffffff;
             --accent-gold: #D4AF37; 
             --gold-gradient: linear-gradient(to right, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
+            --card-n: rgba(84, 110, 122, 0.3);
+            --card-w: rgba(26, 95, 122, 0.3);
         }
 
         body {
@@ -66,7 +68,6 @@
             align-items: center; gap: 10px; font-size: 18px;
         }
 
-        /* Input Grid */
         .info-grid { display: grid; grid-template-columns: 2fr 1fr 2fr; gap: 20px; margin-bottom: 20px; }
         .grid-inputs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 20px; }
         
@@ -84,7 +85,6 @@
         }
         input:focus { border-color: var(--accent-gold); outline: none; background: rgba(255, 255, 255, 0.15); }
 
-        /* Summary Table */
         .income-summary-table {
             background: rgba(0, 0, 0, 0.4);
             border-radius: 20px; padding: 20px; margin: 25px 0;
@@ -98,7 +98,7 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 15px;
-            margin: 30px 0;
+            margin-bottom: 30px;
         }
         .sel-btn {
             padding: 15px;
@@ -118,14 +118,13 @@
             box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
         }
 
-        /* Results Area */
         .card {
             padding: 30px;
             border-radius: 25px;
             backdrop-filter: blur(10px);
             border: 1px solid var(--accent-gold);
             background: rgba(26, 95, 122, 0.3);
-            display: none; /* ซ่อนไว้ก่อน */
+            display: none; 
             animation: fadeIn 0.5s ease;
         }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -159,6 +158,12 @@
             <div class="input-group"><label>ชื่อโครงการ</label><input type="text" id="projName" placeholder="ระบุชื่อโครงการ"></div>
         </div>
 
+        <div class="section-title">เงื่อนไขการกู้ (DSR)</div>
+        <div class="dsr-selector">
+            <div id="btn-n" class="sel-btn active" onclick="setDSR(0.5, 'n')">พนักงานทั่วไป (DSR 50%)</div>
+            <div id="btn-w" class="sel-btn" onclick="setDSR(0.8, 'w')">มีสวัสดิการ (DSR 80%)</div>
+        </div>
+
         <div class="section-title">รายได้เฉลี่ย 6 เดือน</div>
         <div class="grid-inputs">
             <div class="input-group"><label>เดือนที่ 1</label><input type="number" class="inc-input" value="0" oninput="calculateAll()"></div>
@@ -179,12 +184,6 @@
             <div class="summary-row"><span>2. รายได้เฉลี่ยรายเดือน:</span><span id="disp-avg6">0 บาท</span></div>
             <div class="summary-row"><span>3. โบนัสเฉลี่ยรายเดือน:</span><span id="bonus-avg">0 บาท</span></div>
             <div class="summary-row"><span>4. รายได้สุทธิเฉลี่ย (Net):</span><span id="disp-net">0 บาท</span></div>
-        </div>
-
-        <div class="section-title">เลือกเงื่อนไขการกู้ (DSR)</div>
-        <div class="dsr-selector">
-            <div id="btn-n" class="sel-btn active" onclick="setDSR(0.5, 'n')">พนักงานทั่วไป (DSR 50%)</div>
-            <div id="btn-w" class="sel-btn" onclick="setDSR(0.8, 'w')">มีสวัสดิการ (DSR 80%)</div>
         </div>
 
         <div id="result-card" class="card" style="display: block;">
@@ -208,15 +207,10 @@
     function setDSR(val, mode) {
         currentDSR = val;
         currentMode = mode;
-        
-        // สลับ Class Active ของปุ่ม
         document.getElementById('btn-n').classList.remove('active');
         document.getElementById('btn-w').classList.remove('active');
         document.getElementById('btn-' + mode).classList.add('active');
-        
-        // เปลี่ยนหัวข้อในการ์ด
         document.getElementById('res-title').innerText = mode === 'n' ? 'CASE: พนักงานทั่วไป' : 'CASE: มีสวัสดิการ';
-        
         calculateAll();
     }
 
@@ -225,10 +219,8 @@
         document.querySelectorAll('.inc-input').forEach(input => {
             sum6 += parseFloat(input.value || 0);
         });
-        
         const avg6 = sum6 / 6;
-        const bonusTotal = parseFloat(document.getElementById('bonus').value || 0);
-        const bonus12 = bonusTotal / 12;
+        const bonus12 = parseFloat(document.getElementById('bonus').value || 0) / 12;
         const netIncome = avg6 + bonus12;
 
         document.getElementById('disp-sum6').innerText = sum6.toLocaleString() + " บาท";
@@ -236,13 +228,11 @@
         document.getElementById('bonus-avg').innerText = bonus12.toLocaleString(undefined, {minimumFractionDigits: 2}) + " บาท";
         document.getElementById('disp-net').innerText = netIncome.toLocaleString(undefined, {minimumFractionDigits: 2}) + " บาท";
 
-        // คำนวณตาม DSR ที่เลือก
         const ability = netIncome * currentDSR;
         const base = Math.max(0, ability * 200);
         const decor = base * 0.1;
         const total = base + decor;
 
-        // อัปเดตการแสดงผลใน Card เดียว
         document.getElementById('base-val').innerText = Math.floor(base).toLocaleString() + " บ.";
         document.getElementById('decor-val').innerText = Math.floor(decor).toLocaleString() + " บ.";
         document.getElementById('loan-total').innerText = Math.floor(total).toLocaleString() + " บาท";
@@ -252,14 +242,13 @@
     function savePDF() {
         const cust = document.getElementById('custName').value || 'Customer';
         const element = document.getElementById('pdf-content');
-        const opt = {
+        html2pdf().set({
             margin: 10,
-            filename: `Loan_Analysis_${cust}.pdf`,
+            filename: `Estimator_${cust}.pdf`,
             image: { type: 'jpeg', quality: 0.98 },
             html2canvas: { scale: 2, backgroundColor: '#0f0f0f' }, 
             jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-        };
-        html2pdf().set(opt).from(element).save();
+        }).from(element).save();
     }
     
     window.onload = calculateAll;
