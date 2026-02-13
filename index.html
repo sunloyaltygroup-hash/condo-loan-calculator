@@ -51,7 +51,7 @@
         }
 
         h1 {
-            font-size: clamp(20px, 5vw, 32px); /* ปรับขนาดตามหน้าจออัตโนมัติ */
+            font-size: clamp(20px, 5vw, 32px);
             margin: 0;
             text-transform: uppercase;
             letter-spacing: 3px;
@@ -70,7 +70,6 @@
             font-size: 18px;
         }
 
-        /* ข้อมูลลูกค้า - แก้ไขการซ้อนทับ */
         .info-grid {
             display: grid;
             grid-template-columns: 2fr 1fr 2fr;
@@ -78,10 +77,9 @@
             margin-bottom: 20px;
         }
 
-        /* ช่องกรอกรายได้ - แก้ไขการซ้อนทับ */
         .grid-inputs {
             display: grid;
-            grid-template-columns: repeat(3, 1fr); /* แบ่ง 3 ช่องต่อแถวบน Desktop */
+            grid-template-columns: repeat(3, 1fr);
             gap: 20px;
             margin-bottom: 20px;
         }
@@ -107,7 +105,7 @@
             color: white;
             font-size: 16px;
             width: 100%;
-            box-sizing: border-box; /* สำคัญ: ทำให้ padding ไม่ดันความกว้าง l*/
+            box-sizing: border-box;
             transition: all 0.3s ease;
         }
 
@@ -142,15 +140,6 @@
             padding-top: 15px;
         }
 
-        .price-section {
-            background: rgba(212, 175, 55, 0.05);
-            padding: 20px;
-            border-radius: 20px;
-            border: 1px dashed var(--accent-gold);
-            margin-top: 25px;
-        }
-
-        /* ผลลัพธ์ - แก้ไขการซ้อนทับ */
         .results-area {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -159,7 +148,7 @@
         }
 
         .card {
-            padding: 20px;
+            padding: 25px;
             border-radius: 25px;
             backdrop-filter: blur(10px);
             border: 1px solid var(--glass-border);
@@ -179,20 +168,7 @@
         }
 
         .loan-detail { font-size: 0.85em; margin: 8px 0; display: flex; justify-content: space-between; color: rgba(255,255,255,0.8); }
-        .amount-total { font-size: 26px; font-weight: bold; display: block; margin: 15px 0; text-align: center; color: white; }
-
-        .cash-box {
-            background: linear-gradient(45deg, rgba(212, 175, 55, 0.2), rgba(212, 175, 55, 0.4));
-            border: 1px solid var(--accent-gold);
-            color: white;
-            padding: 12px;
-            border-radius: 15px;
-            margin-top: 15px;
-            text-align: center;
-            font-weight: bold;
-            font-size: 1.1em;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-        }
+        .amount-total { font-size: clamp(24px, 4vw, 30px); font-weight: bold; display: block; margin: 15px 0; text-align: center; color: white; }
 
         .btn-pdf {
             width: 100%;
@@ -212,14 +188,13 @@
             transition: 0.3s;
         }
 
-        /* Media Queries สำหรับหน้าจอขนาดเล็ก */
         @media (max-width: 768px) {
-            .grid-inputs { grid-template-columns: 1fr 1fr; } /* Tablet 2 คอลัมน์ */
+            .grid-inputs { grid-template-columns: 1fr 1fr; }
             .info-grid { grid-template-columns: 1fr 1fr; }
         }
 
         @media (max-width: 480px) {
-            .grid-inputs { grid-template-columns: 1fr; } /* Mobile 1 คอลัมน์ */
+            .grid-inputs { grid-template-columns: 1fr; }
             .info-grid { grid-template-columns: 1fr; }
             .results-area { grid-template-columns: 1fr; }
             .container { padding: 20px; }
@@ -275,28 +250,21 @@
             <div class="summary-row"><span>4. รายได้สุทธิเฉลี่ย (Net):</span><span id="disp-net">0 บาท</span></div>
         </div>
 
-        <div class="price-section">
-            <label style="font-weight:bold; color: var(--accent-gold);">ราคาคอนโดที่ซื้อจริง (Net Price)</label>
-            <input type="number" id="price" placeholder="ระบุราคาเพื่อคำนวณเงินทอน" oninput="calculateAll()" style="width:100%; margin-top:10px;">
-        </div>
-
         <div class="results-area">
             <div class="card card-n">
                 <span class="card-title">CASE: พนักงานทั่วไป</span>
                 <div class="loan-detail"><span>วงเงินกู้หลัก:</span> <span id="base-n">0</span></div>
                 <div class="loan-detail"><span>ตกแต่ง (10%):</span> <span id="decor-n">0</span></div>
-                <span class="amount-total" id="loan-n">0</span>
+                <span class="amount-total" id="loan-n">0 บาท</span>
                 <div style="text-align:center; opacity: 0.6; font-size: 0.8em;">ผ่อนสูงสุด: <span id="pay-n">0</span>/ด.</div>
-                <div class="cash-box">เงินทอน: <span id="cb-n">0</span></div>
             </div>
 
             <div class="card card-w">
                 <span class="card-title">CASE: มีสวัสดิการ</span>
                 <div class="loan-detail"><span>วงเงินกู้หลัก:</span> <span id="base-w">0</span></div>
                 <div class="loan-detail"><span>ตกแต่ง (10%):</span> <span id="decor-w">0</span></div>
-                <span class="amount-total" id="loan-w">0</span>
+                <span class="amount-total" id="loan-w">0 บาท</span>
                 <div style="text-align:center; opacity: 0.6; font-size: 0.8em;">ผ่อนสูงสุด: <span id="pay-w">0</span>/ด.</div>
-                <div class="cash-box">เงินทอน: <span id="cb-w">0</span></div>
             </div>
         </div>
     </div>
@@ -317,7 +285,6 @@
         const bonusTotal = parseFloat(document.getElementById('bonus').value || 0);
         const bonus12 = bonusTotal / 12;
         const netIncome = avg6 + bonus12;
-        const condoPrice = parseFloat(document.getElementById('price').value || 0);
 
         document.getElementById('disp-sum6').innerText = sum6.toLocaleString() + " บาท";
         document.getElementById('disp-avg6').innerText = avg6.toLocaleString(undefined, {minimumFractionDigits: 2}) + " บาท";
@@ -339,12 +306,6 @@
             document.getElementById(`decor-${prefix}`).innerText = Math.floor(res.decor).toLocaleString() + " บ.";
             document.getElementById(`loan-${prefix}`).innerText = Math.floor(res.total).toLocaleString() + " บาท";
             document.getElementById(`pay-${prefix}`).innerText = Math.floor(res.ability).toLocaleString();
-            
-            if(condoPrice > 0) {
-                document.getElementById(`cb-${prefix}`).innerText = Math.max(0, Math.floor(res.total) - condoPrice).toLocaleString() + " บาท";
-            } else {
-                document.getElementById(`cb-${prefix}`).innerText = "0 บาท";
-            }
         };
 
         updateCard('n', resN);
