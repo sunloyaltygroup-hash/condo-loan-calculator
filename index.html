@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบประเมินวงเงินกู้และเงินเหลือ (Cash Back)</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <style>
+        :root {
+            --primary-color: #003366;
+            --secondary-color: #d4af37;
+            --accent-color: #1a5f7a;
+            --bg-color: #f4f7f9;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: 'Sarabun', sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: var(--white);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 30px;
+            border-bottom: 3px solid var(--secondary-color);
+            padding-bottom: 15px;
+            font-size: 24px;
+        }
+
+        .section-title {
+            font-weight: bold;
+            color: var(--primary-color);
+            margin: 25px 0 15px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 18px;
+        }
+
+        .grid-inputs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 15px;
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 12px;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        input:focus {
+            border-color: var(--secondary-color);
+            outline: none;
+            box-shadow: 0 0 8px rgba(212, 175, 55, 0.2);
+        }
+
+        .price-highlight {
+            background: #fff9e6;
+            padding: 25px;
+            border-radius: 12px;
+            border: 2px dashed var(--secondary-color);
+            margin-top: 20px;
+        }
+
+        .button-area {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        button {
+            flex: 1;
+            padding: 18px;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-calc { background-color: var(--primary-color); color: white; }
+        .btn-calc:hover { background-color: #002244; transform: translateY(-2px); }
+
+        .btn-pdf { background-color: #cc0000; color: white; display: none; }
+        .btn-pdf:hover { background-color: #990000; }
+
+        .results-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .card {
+            padding: 25px;
+            border-radius: 15px;
+            color: white;
+            text-align: center;
+        }
+
+        .card-normal { background: #546e7a; }
+        .card-welfare { background: var(--accent-color); }
+
+        .amount-main { font-size: 28px; font-weight: bold; display: block; margin: 15px 0; }
+        
+        .cashback-info {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .cashback-val { font-size: 22px; font-weight: bold; }
+
+        @media (max-width: 600px) {
+            .results-container, .button-area { grid-template-columns: 1fr; flex-direction: column; }
+        }
+
+        /* ส่วนหัวใน PDF */
+        .pdf-header { display: none; text-align: center; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+
+<div class="container" id="main-app">
+    <div id="capture-area">
+        <h1><i class="fa-solid fa-building-circle-check"></i> ประเมินวงเงินกู้ & Cash Back</h1>
+        
+        <div class="section-title"><i class="fa-solid fa-wallet"></i> ข้อมูลรายได้ (เฉลี่ย 6 เดือน)</div>
+        <div class="grid-inputs">
+            <div class="input-group"><label>เดือนที่ 1</label><input type="number" class="inc" value="0"></div>
+            <div class="input-group"><label>เดือนที่ 2</label><input type="number" class="inc" value="0"></div>
+            <div class="input-group"><label>เดือนที่ 3</label><input type="number" class="inc" value="0"></div>
+            <div class="input-group"><label>เดือนที่ 4</label><input type="number" class="inc" value="0"></div>
+            <div class="input-group"><label>เดือนที่ 5</label><input type="number" class="inc" value="0"></div>
+            <div class="input-group"><label>เดือนที่ 6</label><input type="number" class="inc" value="0"></div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px;">
+            <div class="input-group"><label>โบนัสรวมทั้งปี (บาท)</label><input type="number" id="bonus" value="0"></div>
+            <div class="input-group"><label>หนี้ผ่อนอื่นๆ/เดือน (บาท)</label><input type="number" id="debt" value="0"></div>
+        </div>
+
+        <div class="price-highlight">
+            <label style="color: var(--primary-color); font-size: 16px;">ราคาคอนโดที่จะซื้อจริง (บาท)</label>
+            <input type="number" id="purchasePrice" placeholder="ระบุราคาขายสุทธิ" style="border: 2px solid var(--secondary-color);">
+            <p style="font-size: 12px; color: #856404; margin-top: 10px;">*ระบบจะนำราคาคอนโดไปหักลบจากวงเงินสูงสุดเพื่อหาเงินทอน</p>
+        </div>
+
+        <div class="results-container">
+            <div class="card card-normal">
+                <strong><i class="fa-solid fa-user"></i> เคสทั่วไป (DSR 50%)</strong>
+                <span class="amount-main" id="loan-n">0</span>
+                <div id="pay-n" style="margin-bottom: 10px; font-size: 0.9em;">ความสามารถผ่อน: 0</div>
+                <div class="cashback-info">
+                    <div>เงินเหลือประมาณการ</div>
+                    <div class="cashback-val" id="cb-n">0</div>
+                </div>
+            </div>
+
+            <div class="card card-welfare">
+                <strong><i class="fa-solid fa-star"></i> เคสสวัสดิการ (DSR 80%)</strong>
+                <span class="amount-main" id="loan-w">0</span>
+                <div id="pay-w" style="margin-bottom: 10px; font-size: 0.9em;">ความสามารถผ่อน: 0</div>
+                <div class="cashback-info">
+                    <div>เงินเหลือประมาณการ</div>
+                    <div class="cashback-val" id="cb-w">0</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="button-area">
+        <button class="btn-calc" onclick="runCalculation()">
+            <i class="fa-solid fa-calculator"></i> คำนวณวงเงิน
+        </button>
+        <button class="btn-pdf" id="pdfBtn" onclick="exportPDF()">
+            <i class="fa-solid fa-file-pdf"></i> บันทึกเป็น PDF
+        </button>
+    </div>
+</div>
+
+<script>
+    function runCalculation() {
+        // 1. รวบรวมรายได้
+        const incFields = document.querySelectorAll('.inc');
+        let sumInc = 0;
+        incFields.forEach(f => sumInc += parseFloat(f.value || 0));
+        
+        const avgSalary = sumInc / 6;
+        const bonusMonthly = parseFloat(document.getElementById('bonus').value || 0) / 12;
+        const totalNetIncome = avgSalary + bonusMonthly;
+        const debt = parseFloat(document.getElementById('debt').value || 0);
+        const price = parseFloat(document.getElementById('purchasePrice').value || 0);
+
+        if(totalNetIncome <= 0) { alert("กรุณากรอกข้อมูลรายได้"); return; }
+
+        // 2. Logic การคำนวณ (ตาม Excel: ล้านละ 5,000 = ตัวคูณ 200)
+        // วงเงินรวม = (ยอดที่ผ่อนได้ * 200) * 1.1 [เพื่อรวมตกแต่ง 10%]
+        
+        const payAbilityN = (totalNetIncome * 0.5) - debt;
+        const maxLoanN = Math.max(0, payAbilityN * 200) * 1.1;
+
+        const payAbilityW = (totalNetIncome * 0.8) - debt;
+        const maxLoanW = Math.max(0, payAbilityW * 200) * 1.1;
+
+        // 3. แสดงผลตัวเลข
+        document.getElementById('loan-n').innerText = Math.floor(maxLoanN).toLocaleString() + " บาท";
+        document.getElementById('pay-n').innerText = "ผ่อนได้สูงสุด: " + Math.max(0, payAbilityN).toLocaleString() + " บ/ด";
+        
+        document.getElementById('loan-w').innerText = Math.floor(maxLoanW).toLocaleString() + " บาท";
+        document.getElementById('pay-w').innerText = "ผ่อนได้สูงสุด: " + Math.max(0, payAbilityW).toLocaleString() + " บ/ด";
+
+        // 4. คำนวณเงินเหลือ
+        if(price > 0) {
+            const cbN = maxLoanN - price;
+            const cbW = maxLoanW - price;
+            document.getElementById('cb-n').innerText = (cbN > 0 ? Math.floor(cbN).toLocaleString() : "0") + " บาท";
+            document.getElementById('cb-w').innerText = (cbW > 0 ? Math.floor(cbW).toLocaleString() : "0") + " บาท";
+        }
+
+        // แสดงปุ่ม PDF
+        document.getElementById('pdfBtn').style.display = 'flex';
+    }
+
+    function exportPDF() {
+        const element = document.getElementById('capture-area');
+        const opt = {
+            margin:       10,
+            filename:     'ประเมินวงเงินคอนโด.pdf',
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2 },
+            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+        html2pdf().set(opt).from(element).save();
+    }
+</script>
+
+</body>
+</html>
