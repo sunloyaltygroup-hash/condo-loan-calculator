@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Maximum Loan Estimator - Professional Edition</title>
+    <title>Debt Load Estimator - Professional Edition</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -33,7 +33,7 @@
             position: relative;
         }
 
-        /* ปรับปรุงส่วนหัวให้รองรับ Logo */
+        /* ปรับปรุงส่วนหัวให้รองรับ Logo จาก URL */
         .header-box { 
             display: flex;
             align-items: center;
@@ -44,10 +44,9 @@
         }
         
         .logo-img {
-            max-height: 80px; /* ปรับขนาดความสูงโลโก้ตามต้องการ */
+            max-height: 80px; /* ปรับขนาดความสูงโลโก้ */
             width: auto;
-            border-radius: 10px;
-            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+            filter: drop-shadow(0 4px 10px rgba(0,0,0,0.3)); /* เพิ่มมิติให้โลโก้ */
         }
 
         .header-text { text-align: left; }
@@ -123,7 +122,7 @@
 <div class="container">
     <div id="pdf-content">
         <div class="header-box">
-            <img src="logo.png" alt="Logo" class="logo-img" onerror="this.style.display='none'"> 
+            <img src="https://betofin.genspace.co.th/Logo-Trans.png" alt="Betofin Logo" class="logo-img"> 
             <div class="header-text">
                 <h1>Maximum Loan Estimator</h1>
                 <p style="margin: 5px 0 0 0; color: rgba(255,255,255,0.5); font-size: 14px; letter-spacing: 1.5px;">รายงานประเมินศักยภาพทางการเงินระดับพรีเมียม</p>
@@ -181,7 +180,9 @@
                             <th style="width: 40px;">ลำดับ</th>
                             <th>รายการหัก</th>
                             <th>หมายเหตุ</th>
-                            <th>ยอดหนี้</th> <th>วงเงินคงเหลือ</th> <th>ยอดหัก/ด</th>
+                            <th>ยอดหนี้</th> 
+                            <th>วงเงินคงเหลือ</th> 
+                            <th>ยอดหัก/ด</th>
                             <th style="width: 110px;">การจัดการ</th>
                         </tr>
                     </thead>
@@ -202,7 +203,9 @@
                             <th>ประเภท</th>
                             <th>สถานะ</th>
                             <th>หมายเหตุ</th>
-                            <th>ยอดหนี้</th> <th>วงเงินคงเหลือ</th> <th>ค่างวด/ด</th>
+                            <th>ยอดหนี้</th> 
+                            <th>วงเงินคงเหลือ</th> 
+                            <th>ค่างวด/ด</th>
                             <th style="width: 110px;">การจัดการ</th>
                         </tr>
                     </thead>
