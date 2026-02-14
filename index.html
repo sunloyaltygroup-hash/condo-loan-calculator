@@ -189,7 +189,9 @@
                             <th style="width: 40px;">ลำดับ</th>
                             <th>รายการหัก</th>
                             <th>หมายเหตุ</th>
-                            <th>วงเงินกู้</th> <th>ยอดหนี้คงเหลือ</th> <th>ยอดหัก/ด</th>
+                            <th>วงเงินกู้</th> 
+                            <th>ยอดหนี้คงเหลือ</th> 
+                            <th>ยอดหัก/ด</th>
                             <th style="width: 110px;">การจัดการ</th>
                         </tr>
                     </thead>
@@ -210,7 +212,9 @@
                             <th>ประเภท</th>
                             <th>สถานะ</th>
                             <th>หมายเหตุ</th>
-                            <th>วงเงินกู้</th> <th>ยอดหนี้คงเหลือ</th> <th>ค่างวด/ด</th>
+                            <th>วงเงินกู้</th> 
+                            <th>ยอดหนี้คงเหลือ</th> 
+                            <th>ค่างวด/ด</th>
                             <th style="width: 110px;">การจัดการ</th>
                         </tr>
                     </thead>
@@ -219,10 +223,11 @@
                 <button type="button" class="add-row-btn" onclick="addBureauRow()">+ เพิ่มบัญชีหนี้บูโร</button>
             </div>
 
+            
             <div class="net-result">
                 <div class="result-row"><span class="result-label">รวมภาระที่หักในสลิป:</span><span class="result-value"><span id="total-slip-val">0</span> บาท</span></div>
                 <div class="result-row"><span class="result-label">รวมภาระหนี้บูโรรายเดือน:</span><span class="result-value"><span id="total-debt-val">0</span> บาท</span></div>
-                <div class="result-row"><span class="result-label">ยอดรวมเงินที่ต้องใช้ปิดหนี้ (สะสมจากวงเงินกู้):</span><span class="result-value" style="color:#ff8c94;"><span id="total-closing-sum">0</span> บาท</span></div>
+                <div class="result-row"><span class="result-label">ยอดรวมเงินที่ต้องใช้ปิดหนี้ (สะสมจากยอดหนี้คงเหลือ):</span><span class="result-value" style="color:#ff8c94;"><span id="total-closing-sum">0</span> บาท</span></div>
                 <div class="result-row highlight-capacity"><span class="result-label" style="color:var(--accent-gold)">คงเหลือความสามารถผ่อนจริง:</span><span class="result-value"><span id="net-capacity-val">0</span> บาท/ด.</span></div>
             </div>
         </div>
@@ -307,6 +312,7 @@
     }
 
     function calculateAll() {
+        // รายได้
         let sumMain = 0;
         document.querySelectorAll('.salary-input').forEach(input => sumMain += parseFloat(input.value || 0));
         const avgMain = sumMain / 6;
@@ -332,17 +338,19 @@
         const maxCapacity = netIncomeTotal * currentDSR;
         document.getElementById('pay-val').innerText = Math.floor(maxCapacity).toLocaleString();
 
+        // หนี้สิน
         let totalSlipInstallment = 0;
         let totalBureauInstallment = 0;
         let totalClosingSum = 0;
 
         document.querySelectorAll('#slip-body tr, #bureau-body tr').forEach(row => {
-            const loanVal = parseFloat(row.querySelector('.loan-amount').value || 0);
+            // ดึงค่า "ยอดหนี้คงเหลือ" (remaining-debt) มาใช้สำหรับยอดปิดหนี้
+            const debtRemaining = parseFloat(row.querySelector('.remaining-debt').value || 0);
             const installment = parseFloat(row.querySelector('.debt-installment').value || 0);
             const isSlip = row.closest('tbody').id === 'slip-body';
 
             if (row.dataset.closed === "true") {
-                totalClosingSum += loanVal; // สะสมจากคอลัมน์ "วงเงินกู้" (ตามคำสั่งเดิม)
+                totalClosingSum += debtRemaining; // นำยอดหนี้คงเหลือมาสะสมเมื่อกดปิดหนี้
             } else {
                 if (isSlip) totalSlipInstallment += installment;
                 else totalBureauInstallment += installment;
