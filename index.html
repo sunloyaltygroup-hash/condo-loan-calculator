@@ -155,9 +155,7 @@
                             <th style="width: 40px;">ลำดับ</th>
                             <th>รายการหัก</th>
                             <th>หมายเหตุ</th>
-                            <th>วงเงิน</th>
-                            <th>ยอดหนี้</th>
-                            <th>ยอดหัก/ด</th>
+                            <th>ยอดหนี้</th> <th>วงเงินคงเหลือ</th> <th>ยอดหัก/ด</th>
                             <th style="width: 110px;">การจัดการ</th>
                         </tr>
                     </thead>
@@ -178,9 +176,7 @@
                             <th>ประเภท</th>
                             <th>สถานะ</th>
                             <th>หมายเหตุ</th>
-                            <th>วงเงิน</th>
-                            <th>ยอดหนี้</th>
-                            <th>ค่างวด/ด</th>
+                            <th>ยอดหนี้</th> <th>วงเงินคงเหลือ</th> <th>ค่างวด/ด</th>
                             <th style="width: 110px;">การจัดการ</th>
                         </tr>
                     </thead>
@@ -221,15 +217,10 @@
     let slipRowCount = 0;
 
     window.onload = function() {
-        // แถวที่ 1-2 สลิป (Pre-filled)
         addSlipRow("เงินประกันสังคม");
         addSlipRow("เงินสำรองเลี้ยงชีพ");
-        // แถวที่ 3-5 สลิป (Blank)
         for(let i=0; i<3; i++) addSlipRow("");
-        
-        // แถวที่ 1-5 บูโร (Blank)
         for(let i=0; i<5; i++) addBureauRow();
-        
         calculateAll();
     };
 
@@ -242,8 +233,8 @@
             <td><input type="text" class="table-input" value="${slipRowCount}" style="text-align:center;"></td>
             <td><input type="text" class="table-input" value="${prefillText}" placeholder="เช่น สหกรณ์"></td>
             <td><input type="text" class="table-input" placeholder="-"></td>
-            <td><input type="number" class="table-input" value="0" oninput="calculateAll()"></td>
             <td><input type="number" class="table-input debt-amount" value="0" oninput="calculateAll()"></td>
+            <td><input type="number" class="table-input" value="0" oninput="calculateAll()"></td>
             <td><input type="number" class="table-input debt-installment" value="0" oninput="calculateAll()"></td>
             <td style="text-align:center;"><button type="button" class="btn-close-debt" onclick="toggleRow(this)">ปิดหนี้</button></td>
         `;
@@ -261,8 +252,8 @@
             <td><input type="text" class="table-input" placeholder="-"></td>
             <td><input type="text" class="table-input" placeholder="-"></td>
             <td><input type="text" class="table-input" placeholder="-"></td>
-            <td><input type="number" class="table-input" value="0" oninput="calculateAll()"></td>
             <td><input type="number" class="table-input debt-amount" value="0" oninput="calculateAll()"></td>
+            <td><input type="number" class="table-input" value="0" oninput="calculateAll()"></td>
             <td><input type="number" class="table-input debt-installment" value="0" oninput="calculateAll()"></td>
             <td style="text-align:center;"><button type="button" class="btn-close-debt" onclick="toggleRow(this)">ปิดหนี้</button></td>
         `;
@@ -347,7 +338,7 @@
         const element = document.getElementById('pdf-content');
         html2pdf().set({
             margin: 10,
-            filename: `Lead_Analysis_${cust}.pdf`,
+            filename: `Debt_Analysis_${cust}.pdf`,
             image: { type: 'jpeg', quality: 0.98 },
             html2canvas: { scale: 2, backgroundColor: '#0f0f0f' }, 
             jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' }
