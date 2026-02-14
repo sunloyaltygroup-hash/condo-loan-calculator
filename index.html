@@ -44,7 +44,7 @@
 
         .section-title { font-weight: bold; color: var(--accent-gold); margin: 25px 0 15px 0; display: flex; align-items: center; gap: 10px; font-size: 18px; }
         .info-grid { display: grid; grid-template-columns: 2fr 1fr 2fr; gap: 20px; margin-bottom: 20px; }
-        .grid-inputs { display: grid; grid-template-columns: repeat(6, 1fr); gap: 15px; margin-bottom: 15px; }
+        .grid-inputs { display: grid; grid-template-columns: repeat(6, 1fr); gap: 15px; margin-bottom: 20px; }
         
         .other-income-summary {
             display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
@@ -78,7 +78,7 @@
         .amount-highlight { font-size: 50px; font-weight: bold; color: white; display: block; margin: 10px 0; }
 
         .bureau-section { overflow-x: auto; margin-top: 20px; background: rgba(0,0,0,0.2); border-radius: 20px; padding: 20px; border: 1px solid var(--glass-border); margin-bottom: 40px; }
-        table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 1000px; }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 1100px; }
         th { background: rgba(212, 175, 55, 0.2); color: var(--accent-gold); padding: 15px; text-align: left; border-bottom: 1px solid var(--glass-border); }
         td { padding: 8px; border-bottom: 1px solid rgba(255,255,255,0.05); transition: 0.3s; }
         .table-input { background: transparent; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 8px; color: white; font-size: 13px; width: 100%; box-sizing: border-box; }
@@ -105,7 +105,6 @@
 
         @media (max-width: 1024px) { 
             .grid-inputs { grid-template-columns: repeat(3, 1fr); } 
-            .other-income-summary { grid-template-columns: 1fr 1fr; }
             .header-box { flex-direction: column; text-align: center; }
         }
     </style>
@@ -156,22 +155,10 @@
         </div>
 
         <div class="other-income-summary">
-            <div class="input-group">
-                <label>ผลรวมรายได้อื่น (6ด.)</label>
-                <input type="text" id="other-sum-disp" class="readonly-box" readonly value="0">
-            </div>
-            <div class="input-group">
-                <label>ค่าเฉลี่ยรายได้อื่น/เดือน</label>
-                <input type="text" id="other-avg-disp" class="readonly-box" readonly value="0">
-            </div>
-            <div class="input-group">
-                <label>คิดให้ (%)</label>
-                <input type="number" id="other-pct" value="100" oninput="calculateAll()">
-            </div>
-            <div class="input-group">
-                <label>รายได้อื่นเฉลี่ยสุทธิ</label>
-                <input type="text" id="other-net-disp" class="readonly-box" style="color:#FCF6BA" readonly value="0">
-            </div>
+            <div class="input-group"><label>ผลรวมรายได้อื่น (6ด.)</label><input type="text" id="other-sum-disp" class="readonly-box" readonly value="0"></div>
+            <div class="input-group"><label>ค่าเฉลี่ยรายได้อื่น/เดือน</label><input type="text" id="other-avg-disp" class="readonly-box" readonly value="0"></div>
+            <div class="input-group"><label>คิดให้ (%)</label><input type="number" id="other-pct" value="100" oninput="calculateAll()"></div>
+            <div class="input-group"><label>รายได้อื่นเฉลี่ยสุทธิ</label><input type="text" id="other-net-disp" class="readonly-box" style="color:#FCF6BA" readonly value="0"></div>
         </div>
 
         <div class="input-group" style="margin-top: 15px; max-width: 300px;">
@@ -202,7 +189,7 @@
                             <th style="width: 40px;">ลำดับ</th>
                             <th>รายการหัก</th>
                             <th>หมายเหตุ</th>
-                            <th>ยอดหนี้</th> <th>วงเงินคงเหลือ</th> <th>ยอดหัก/ด</th>
+                            <th>วงเงินกู้</th> <th>ยอดหนี้คงเหลือ</th> <th>ยอดหัก/ด</th>
                             <th style="width: 110px;">การจัดการ</th>
                         </tr>
                     </thead>
@@ -223,7 +210,7 @@
                             <th>ประเภท</th>
                             <th>สถานะ</th>
                             <th>หมายเหตุ</th>
-                            <th>ยอดหนี้</th> <th>วงเงินคงเหลือ</th> <th>ค่างวด/ด</th>
+                            <th>วงเงินกู้</th> <th>ยอดหนี้คงเหลือ</th> <th>ค่างวด/ด</th>
                             <th style="width: 110px;">การจัดการ</th>
                         </tr>
                     </thead>
@@ -233,29 +220,15 @@
             </div>
 
             <div class="net-result">
-                <div class="result-row">
-                    <span class="result-label">รวมภาระที่หักในสลิป:</span>
-                    <span class="result-value"><span id="total-slip-val">0</span> บาท</span>
-                </div>
-                <div class="result-row">
-                    <span class="result-label">รวมภาระหนี้บูโรรายเดือน:</span>
-                    <span class="result-value"><span id="total-debt-val">0</span> บาท</span>
-                </div>
-                <div class="result-row">
-                    <span class="result-label">ยอดรวมเงินที่ต้องใช้ปิดหนี้ (สะสมจากวงเงินคงเหลือ):</span>
-                    <span class="result-value" style="color:#ff8c94;"><span id="total-closing-sum">0</span> บาท</span>
-                </div>
-                <div class="result-row highlight-capacity">
-                    <span class="result-label" style="color:var(--accent-gold)">คงเหลือความสามารถผ่อนจริง:</span>
-                    <span class="result-value"><span id="net-capacity-val">0</span> บาท/ด.</span>
-                </div>
+                <div class="result-row"><span class="result-label">รวมภาระที่หักในสลิป:</span><span class="result-value"><span id="total-slip-val">0</span> บาท</span></div>
+                <div class="result-row"><span class="result-label">รวมภาระหนี้บูโรรายเดือน:</span><span class="result-value"><span id="total-debt-val">0</span> บาท</span></div>
+                <div class="result-row"><span class="result-label">ยอดรวมเงินที่ต้องใช้ปิดหนี้ (สะสมจากวงเงินกู้):</span><span class="result-value" style="color:#ff8c94;"><span id="total-closing-sum">0</span> บาท</span></div>
+                <div class="result-row highlight-capacity"><span class="result-label" style="color:var(--accent-gold)">คงเหลือความสามารถผ่อนจริง:</span><span class="result-value"><span id="net-capacity-val">0</span> บาท/ด.</span></div>
             </div>
         </div>
     </div>
 
-    <button class="btn-pdf" onclick="savePDF()">
-        <i class="fa-solid fa-file-pdf"></i> ดาวน์โหลดรายงาน (PDF)
-    </button>
+    <button class="btn-pdf" onclick="savePDF()"><i class="fa-solid fa-file-pdf"></i> ดาวน์โหลดรายงาน (PDF)</button>
 </div>
 
 <script>
@@ -280,8 +253,8 @@
             <td><input type="text" class="table-input" value="${slipRowCount}" style="text-align:center;"></td>
             <td><input type="text" class="table-input" value="${prefillText}" placeholder="เช่น สหกรณ์"></td>
             <td><input type="text" class="table-input" placeholder="-"></td>
-            <td><input type="number" class="table-input debt-amount" value="0" oninput="calculateAll()"></td>
-            <td><input type="number" class="table-input remaining-balance" value="0" oninput="calculateAll()"></td>
+            <td><input type="number" class="table-input loan-amount" value="0" oninput="calculateAll()"></td>
+            <td><input type="number" class="table-input remaining-debt" value="0" oninput="calculateAll()"></td>
             <td><input type="number" class="table-input debt-installment" value="0" oninput="calculateAll()"></td>
             <td style="text-align:center;"><button type="button" class="btn-close-debt" onclick="toggleRow(this)">ปิดหนี้</button></td>
         `;
@@ -299,8 +272,8 @@
             <td><input type="text" class="table-input" placeholder="-"></td>
             <td><input type="text" class="table-input" placeholder="-"></td>
             <td><input type="text" class="table-input" placeholder="-"></td>
-            <td><input type="number" class="table-input debt-amount" value="0" oninput="calculateAll()"></td>
-            <td><input type="number" class="table-input remaining-balance" value="0" oninput="calculateAll()"></td>
+            <td><input type="number" class="table-input loan-amount" value="0" oninput="calculateAll()"></td>
+            <td><input type="number" class="table-input remaining-debt" value="0" oninput="calculateAll()"></td>
             <td><input type="number" class="table-input debt-installment" value="0" oninput="calculateAll()"></td>
             <td style="text-align:center;"><button type="button" class="btn-close-debt" onclick="toggleRow(this)">ปิดหนี้</button></td>
         `;
@@ -334,51 +307,42 @@
     }
 
     function calculateAll() {
-        // 1. คำนวณรายได้หลัก
         let sumMain = 0;
         document.querySelectorAll('.salary-input').forEach(input => sumMain += parseFloat(input.value || 0));
         const avgMain = sumMain / 6;
 
-        // 2. คำนวณรายได้อื่นๆ
         let sumOther = 0;
         document.querySelectorAll('.other-input').forEach(input => sumOther += parseFloat(input.value || 0));
         const avgOther = sumOther / 6;
         const otherPct = parseFloat(document.getElementById('other-pct').value || 0);
         const otherNet = avgOther * (otherPct / 100);
 
-        // แสดงผลในตาราง 4 ช่อง
         document.getElementById('other-sum-disp').value = sumOther.toLocaleString();
         document.getElementById('other-avg-disp').value = avgOther.toLocaleString(undefined, {minimumFractionDigits: 0});
         document.getElementById('other-net-disp').value = otherNet.toLocaleString(undefined, {minimumFractionDigits: 0});
 
-        // 3. คำนวณโบนัส
         const bonus12 = parseFloat(document.getElementById('bonus').value || 0) / 12;
-
-        // รายได้สุทธิรวม
         const netIncomeTotal = avgMain + otherNet + bonus12;
 
-        // อัปเดตตารางสรุปรายได้
-        document.getElementById('disp-avg-main').innerText = avgMain.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0}) + " บาท";
-        document.getElementById('disp-avg-other').innerText = otherNet.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0}) + " บาท";
-        document.getElementById('bonus-avg').innerText = bonus12.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0}) + " บาท";
-        document.getElementById('disp-net').innerText = netIncomeTotal.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0}) + " บาท";
+        document.getElementById('disp-avg-main').innerText = avgMain.toLocaleString(undefined, {maximumFractionDigits: 0}) + " บาท";
+        document.getElementById('disp-avg-other').innerText = otherNet.toLocaleString(undefined, {maximumFractionDigits: 0}) + " บาท";
+        document.getElementById('bonus-avg').innerText = bonus12.toLocaleString(undefined, {maximumFractionDigits: 0}) + " บาท";
+        document.getElementById('disp-net').innerText = netIncomeTotal.toLocaleString(undefined, {maximumFractionDigits: 0}) + " บาท";
 
-        // 4. ภาระหนี้สูงสุด
         const maxCapacity = netIncomeTotal * currentDSR;
         document.getElementById('pay-val').innerText = Math.floor(maxCapacity).toLocaleString();
 
-        // 5. คำนวณหนี้ในตาราง
         let totalSlipInstallment = 0;
         let totalBureauInstallment = 0;
         let totalClosingSum = 0;
 
         document.querySelectorAll('#slip-body tr, #bureau-body tr').forEach(row => {
-            const remainingBalance = parseFloat(row.querySelector('.remaining-balance').value || 0);
+            const loanVal = parseFloat(row.querySelector('.loan-amount').value || 0);
             const installment = parseFloat(row.querySelector('.debt-installment').value || 0);
             const isSlip = row.closest('tbody').id === 'slip-body';
 
             if (row.dataset.closed === "true") {
-                totalClosingSum += remainingBalance;
+                totalClosingSum += loanVal; // สะสมจากคอลัมน์ "วงเงินกู้" (ตามคำสั่งเดิม)
             } else {
                 if (isSlip) totalSlipInstallment += installment;
                 else totalBureauInstallment += installment;
