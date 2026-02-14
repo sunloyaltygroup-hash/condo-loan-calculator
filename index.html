@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Debt Load Estimator - Professional Edition</title>
+    <title>Maximum Loan Estimator - Professional Edition</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -30,9 +30,28 @@
             backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--glass-border); border-radius: 30px;
             padding: 40px; box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8); box-sizing: border-box;
+            position: relative;
         }
 
-        .header-box { text-align: center; margin-bottom: 30px; border-bottom: 1px solid var(--glass-border); padding-bottom: 20px; }
+        /* ปรับปรุงส่วนหัวให้รองรับ Logo */
+        .header-box { 
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            margin-bottom: 30px; 
+            border-bottom: 1px solid var(--glass-border); 
+            padding-bottom: 20px; 
+        }
+        
+        .logo-img {
+            max-height: 80px; /* ปรับขนาดความสูงโลโก้ตามต้องการ */
+            width: auto;
+            border-radius: 10px;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+        }
+
+        .header-text { text-align: left; }
+
         h1 { font-size: clamp(24px, 5vw, 36px); margin: 0; text-transform: uppercase; letter-spacing: 3px; color: #ffffff; font-weight: 700; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
 
         .section-title { font-weight: bold; color: var(--accent-gold); margin: 25px 0 15px 0; display: flex; align-items: center; gap: 10px; font-size: 20px; }
@@ -90,7 +109,11 @@
 
         .btn-pdf { width: 100%; padding: 20px; background: var(--gold-gradient); color: #000; border: none; border-radius: 20px; font-size: 20px; font-weight: bold; cursor: pointer; margin-top: 40px; }
 
-        @media (max-width: 1024px) { .grid-inputs { grid-template-columns: repeat(3, 1fr); } }
+        @media (max-width: 1024px) { 
+            .grid-inputs { grid-template-columns: repeat(3, 1fr); } 
+            .header-box { flex-direction: column; text-align: center; }
+            .header-text { text-align: center; }
+        }
         @media (max-width: 768px) { .grid-inputs, .info-grid { grid-template-columns: 1fr 1fr; } }
         @media (max-width: 480px) { .grid-inputs, .info-grid, .dsr-selector { grid-template-columns: 1fr; } }
     </style>
@@ -100,8 +123,11 @@
 <div class="container">
     <div id="pdf-content">
         <div class="header-box">
-            <h1>Maximum Loan Estimator</h1>
-            <p style="margin: 10px 0 0 0; color: rgba(255,255,255,0.5); font-size: 14px; letter-spacing: 1.5px;">รายงานประเมินศักยภาพทางการเงินระดับพรีเมียม</p>
+            <img src="logo.png" alt="Logo" class="logo-img" onerror="this.style.display='none'"> 
+            <div class="header-text">
+                <h1>Maximum Loan Estimator</h1>
+                <p style="margin: 5px 0 0 0; color: rgba(255,255,255,0.5); font-size: 14px; letter-spacing: 1.5px;">รายงานประเมินศักยภาพทางการเงินระดับพรีเมียม</p>
+            </div>
         </div>
 
         <div class="section-title">ข้อมูลลูกค้าและโครงการ</div>
@@ -155,9 +181,7 @@
                             <th style="width: 40px;">ลำดับ</th>
                             <th>รายการหัก</th>
                             <th>หมายเหตุ</th>
-                            <th>ยอดหนี้</th>
-                            <th>วงเงินคงเหลือ</th> 
-                            <th>ยอดหัก/ด</th>
+                            <th>ยอดหนี้</th> <th>วงเงินคงเหลือ</th> <th>ยอดหัก/ด</th>
                             <th style="width: 110px;">การจัดการ</th>
                         </tr>
                     </thead>
@@ -178,9 +202,7 @@
                             <th>ประเภท</th>
                             <th>สถานะ</th>
                             <th>หมายเหตุ</th>
-                            <th>ยอดหนี้</th>
-                            <th>วงเงินคงเหลือ</th>
-                            <th>ค่างวด/ด</th>
+                            <th>ยอดหนี้</th> <th>วงเงินคงเหลือ</th> <th>ค่างวด/ด</th>
                             <th style="width: 110px;">การจัดการ</th>
                         </tr>
                     </thead>
@@ -309,17 +331,14 @@
         let totalBureauInstallment = 0;
         let totalClosingSum = 0;
 
-        // คำนวณทุกแถวในสลิปและบูโร
         document.querySelectorAll('#slip-body tr, #bureau-body tr').forEach(row => {
             const remainingBalance = parseFloat(row.querySelector('.remaining-balance').value || 0);
             const installment = parseFloat(row.querySelector('.debt-installment').value || 0);
             const isSlip = row.closest('tbody').id === 'slip-body';
 
             if (row.dataset.closed === "true") {
-                // ถ้าปิดหนี้ ให้นำ "วงเงินคงเหลือ" ไปรวมในยอดสะสม
                 totalClosingSum += remainingBalance;
             } else {
-                // ถ้าไม่ปิด ให้นำค่างวดไปบวกในภาระรายเดือนปกติ
                 if (isSlip) totalSlipInstallment += installment;
                 else totalBureauInstallment += installment;
             }
@@ -328,9 +347,7 @@
         document.getElementById('total-slip-val').innerText = totalSlipInstallment.toLocaleString();
         document.getElementById('total-debt-val').innerText = totalBureauInstallment.toLocaleString();
         document.getElementById('total-closing-sum').innerText = totalClosingSum.toLocaleString();
-        
-        const netCapacity = maxCapacity - (totalSlipInstallment + totalBureauInstallment);
-        document.getElementById('net-capacity-val').innerText = Math.floor(netCapacity).toLocaleString();
+        document.getElementById('net-capacity-val').innerText = Math.floor(maxCapacity - (totalSlipInstallment + totalBureauInstallment)).toLocaleString();
     }
 
     function savePDF() {
