@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Debt Load Estimator - Widescreen Edition</title>
+    <title>Debt Load Estimator - Professional Edition</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -25,10 +25,8 @@
             margin: 0; padding: 20px; color: var(--primary-text); line-height: 1.6;
         }
 
-        /* 1. ขยายพื้นที่ทำงานเป็น 1400px */
         .container {
-            max-width: 1400px; 
-            margin: auto; background: var(--glass-bg);
+            max-width: 1400px; margin: auto; background: var(--glass-bg);
             backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--glass-border); border-radius: 30px;
             padding: 40px; box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8); box-sizing: border-box;
@@ -39,8 +37,6 @@
 
         .section-title { font-weight: bold; color: var(--accent-gold); margin: 25px 0 15px 0; display: flex; align-items: center; gap: 10px; font-size: 20px; }
         .info-grid { display: grid; grid-template-columns: 2fr 1fr 2fr; gap: 20px; margin-bottom: 20px; }
-
-        /* 2. ปรับช่องรายได้ให้เป็น 6 คอลัมน์ (เรียงแถวเดียวบน PC) */
         .grid-inputs { display: grid; grid-template-columns: repeat(6, 1fr); gap: 15px; margin-bottom: 20px; }
         
         .input-group { display: flex; flex-direction: column; width: 100%; }
@@ -68,11 +64,10 @@
         .card-title { font-weight: bold; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; margin-bottom: 25px; display: block; color: var(--accent-gold); font-size: 1.4em; }
         .amount-highlight { font-size: 60px; font-weight: bold; color: white; display: block; margin: 10px 0; }
 
-        /* ตารางบูโรขยายกว้างขึ้น */
-        .bureau-section { overflow-x: auto; margin-top: 20px; background: rgba(0,0,0,0.2); border-radius: 20px; padding: 20px; border: 1px solid var(--glass-border); }
+        .bureau-section { overflow-x: auto; margin-top: 20px; background: rgba(0,0,0,0.2); border-radius: 20px; padding: 20px; border: 1px solid var(--glass-border); margin-bottom: 40px; }
         table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 1000px; }
         th { background: rgba(212, 175, 55, 0.2); color: var(--accent-gold); padding: 15px; text-align: left; border-bottom: 1px solid var(--glass-border); }
-        td { padding: 8px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        td { padding: 8px; border-bottom: 1px solid rgba(255,255,255,0.05); transition: 0.3s; }
         .table-input { background: transparent; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 8px; color: white; font-size: 13px; width: 100%; box-sizing: border-box; }
         
         .row-closed { opacity: 0.35; background: rgba(220, 53, 69, 0.05); }
@@ -86,7 +81,7 @@
 
         .add-row-btn {
             background: rgba(255, 255, 255, 0.1); border: 1px dashed var(--accent-gold); color: var(--accent-gold);
-            padding: 10px 30px; border-radius: 12px; cursor: pointer; margin-top: 20px; font-weight: bold;
+            padding: 10px 30px; border-radius: 12px; cursor: pointer; margin-top: 20px; font-weight: bold; margin-bottom: 10px;
         }
 
         .net-result { margin-top: 30px; padding: 25px; background: rgba(0,0,0,0.3); border-radius: 25px; border-left: 6px solid var(--accent-gold); text-align: right; }
@@ -95,18 +90,9 @@
 
         .btn-pdf { width: 100%; padding: 20px; background: var(--gold-gradient); color: #000; border: none; border-radius: 20px; font-size: 20px; font-weight: bold; cursor: pointer; margin-top: 40px; }
 
-        /* Media Queries - รักษาการใช้งานบนมือถือ */
-        @media (max-width: 1024px) {
-            .grid-inputs { grid-template-columns: repeat(3, 1fr); }
-            .container { padding: 25px; }
-        }
-        @media (max-width: 768px) {
-            .grid-inputs { grid-template-columns: 1fr 1fr; }
-            .info-grid { grid-template-columns: 1fr 1fr; }
-        }
-        @media (max-width: 480px) {
-            .grid-inputs, .info-grid, .dsr-selector { grid-template-columns: 1fr; }
-        }
+        @media (max-width: 1024px) { .grid-inputs { grid-template-columns: repeat(3, 1fr); } }
+        @media (max-width: 768px) { .grid-inputs, .info-grid { grid-template-columns: 1fr 1fr; } }
+        @media (max-width: 480px) { .grid-inputs, .info-grid, .dsr-selector { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -160,6 +146,27 @@
             <div style="color: var(--accent-gold); font-weight: bold; font-size: 1.1em;">บาท / เดือน</div>
 
             <div class="section-title" style="justify-content: center; margin-top: 40px;">
+                <i class="fa-solid fa-file-invoice"></i> รายละเอียดภาระที่หักในสลิปเงินเดือน
+            </div>
+            <div class="bureau-section">
+                <table id="slip-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 40px;">ลำดับ</th>
+                            <th>รายการหัก</th>
+                            <th>หมายเหตุ</th>
+                            <th>วงเงิน</th>
+                            <th>ยอดหนี้</th>
+                            <th>ยอดหัก/ด</th>
+                            <th style="width: 110px;">การจัดการ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="slip-body"></tbody>
+                </table>
+                <button type="button" class="add-row-btn" onclick="addSlipRow()">+ เพิ่มรายการหักในสลิป</button>
+            </div>
+
+            <div class="section-title" style="justify-content: center; margin-top: 40px;">
                 <i class="fa-solid fa-table-list"></i> รายละเอียดสถานะหนี้ บูโร
             </div>
             <div class="bureau-section">
@@ -179,12 +186,16 @@
                     </thead>
                     <tbody id="bureau-body"></tbody>
                 </table>
-                <button type="button" class="add-row-btn" onclick="addBureauRow()">+ เพิ่มแถวบัญชีใหม่</button>
+                <button type="button" class="add-row-btn" onclick="addBureauRow()">+ เพิ่มบัญชีหนี้บูโร</button>
             </div>
 
             <div class="net-result">
                 <div class="result-row">
-                    <span class="result-label">รวมภาระหนี้รายเดือนปัจจุบัน:</span>
+                    <span class="result-label">รวมภาระที่หักในสลิป:</span>
+                    <span class="result-value"><span id="total-slip-val">0</span> บาท</span>
+                </div>
+                <div class="result-row">
+                    <span class="result-label">รวมภาระหนี้บูโรรายเดือน:</span>
                     <span class="result-value"><span id="total-debt-val">0</span> บาท</span>
                 </div>
                 <div class="result-row">
@@ -207,11 +218,37 @@
 <script>
     let currentDSR = 0.5;
     let bureauRowCount = 0;
+    let slipRowCount = 0;
 
     window.onload = function() {
+        // แถวที่ 1-2 สลิป (Pre-filled)
+        addSlipRow("เงินประกันสังคม");
+        addSlipRow("เงินสำรองเลี้ยงชีพ");
+        // แถวที่ 3-5 สลิป (Blank)
+        for(let i=0; i<3; i++) addSlipRow("");
+        
+        // แถวที่ 1-5 บูโร (Blank)
         for(let i=0; i<5; i++) addBureauRow();
+        
         calculateAll();
     };
+
+    function addSlipRow(prefillText = "") {
+        slipRowCount++;
+        const tbody = document.getElementById('slip-body');
+        const row = document.createElement('tr');
+        row.dataset.closed = "false";
+        row.innerHTML = `
+            <td><input type="text" class="table-input" value="${slipRowCount}" style="text-align:center;"></td>
+            <td><input type="text" class="table-input" value="${prefillText}" placeholder="เช่น สหกรณ์"></td>
+            <td><input type="text" class="table-input" placeholder="-"></td>
+            <td><input type="number" class="table-input" value="0" oninput="calculateAll()"></td>
+            <td><input type="number" class="table-input debt-amount" value="0" oninput="calculateAll()"></td>
+            <td><input type="number" class="table-input debt-installment" value="0" oninput="calculateAll()"></td>
+            <td style="text-align:center;"><button type="button" class="btn-close-debt" onclick="toggleRow(this)">ปิดหนี้</button></td>
+        `;
+        tbody.appendChild(row);
+    }
 
     function addBureauRow() {
         bureauRowCount++;
@@ -227,12 +264,12 @@
             <td><input type="number" class="table-input" value="0" oninput="calculateAll()"></td>
             <td><input type="number" class="table-input debt-amount" value="0" oninput="calculateAll()"></td>
             <td><input type="number" class="table-input debt-installment" value="0" oninput="calculateAll()"></td>
-            <td style="text-align:center;"><button type="button" class="btn-close-debt" onclick="toggleDebtRow(this)">ปิดหนี้</button></td>
+            <td style="text-align:center;"><button type="button" class="btn-close-debt" onclick="toggleRow(this)">ปิดหนี้</button></td>
         `;
         tbody.appendChild(row);
     }
 
-    function toggleDebtRow(btn) {
+    function toggleRow(btn) {
         const row = btn.closest('tr');
         const isClosed = row.dataset.closed === "true";
         if (!isClosed) {
@@ -273,8 +310,19 @@
         const maxCapacity = netIncome * currentDSR;
         document.getElementById('pay-val').innerText = Math.floor(maxCapacity).toLocaleString();
 
-        let activeMonthlyDebt = 0;
+        let totalSlipInstallment = 0;
+        let totalBureauInstallment = 0;
         let totalClosingSum = 0;
+
+        document.querySelectorAll('#slip-body tr').forEach(row => {
+            const debt = parseFloat(row.querySelector('.debt-amount').value || 0);
+            const installment = parseFloat(row.querySelector('.debt-installment').value || 0);
+            if (row.dataset.closed === "true") {
+                totalClosingSum += debt;
+            } else {
+                totalSlipInstallment += installment;
+            }
+        });
 
         document.querySelectorAll('#bureau-body tr').forEach(row => {
             const debt = parseFloat(row.querySelector('.debt-amount').value || 0);
@@ -282,13 +330,16 @@
             if (row.dataset.closed === "true") {
                 totalClosingSum += debt;
             } else {
-                activeMonthlyDebt += installment;
+                totalBureauInstallment += installment;
             }
         });
 
-        document.getElementById('total-debt-val').innerText = activeMonthlyDebt.toLocaleString();
+        document.getElementById('total-slip-val').innerText = totalSlipInstallment.toLocaleString();
+        document.getElementById('total-debt-val').innerText = totalBureauInstallment.toLocaleString();
         document.getElementById('total-closing-sum').innerText = totalClosingSum.toLocaleString();
-        document.getElementById('net-capacity-val').innerText = Math.floor(maxCapacity - activeMonthlyDebt).toLocaleString();
+        
+        const netCapacity = maxCapacity - (totalSlipInstallment + totalBureauInstallment);
+        document.getElementById('net-capacity-val').innerText = Math.floor(netCapacity).toLocaleString();
     }
 
     function savePDF() {
@@ -296,10 +347,10 @@
         const element = document.getElementById('pdf-content');
         html2pdf().set({
             margin: 10,
-            filename: `Widescreen_Analysis_${cust}.pdf`,
+            filename: `Lead_Analysis_${cust}.pdf`,
             image: { type: 'jpeg', quality: 0.98 },
             html2canvas: { scale: 2, backgroundColor: '#0f0f0f' }, 
-            jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' } // ปรับ PDF เป็นแนวนอนเพื่อให้รับกับความกว้าง
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' }
         }).from(element).save();
     }
 </script>
