@@ -43,14 +43,13 @@
         }
         
         .logo-img {
-            max-height: 70px; /* ปรับขนาดโลโก้ให้รับกับหัวข้อที่เล็กลง */
+            max-height: 70px;
             width: auto;
             filter: drop-shadow(0 4px 10px rgba(0,0,0,0.3));
         }
 
         .header-text { text-align: left; }
 
-        /* ปรับขนาดตัวหนังสือที่นี่ */
         h1 { 
             font-size: clamp(18px, 2.5vw, 26px); 
             margin: 0; 
@@ -61,7 +60,7 @@
             text-shadow: 0 2px 8px rgba(0,0,0,0.5); 
         }
 
-        .section-title { font-weight: bold; color: var(--accent-gold); margin: 25px 0 15px 0; display: flex; align-items: center; gap: 10px; font-size: 18px; }
+        .section-title { font-weight: bold; color: var(--accent-gold); margin: 25px 0 15px 0; display: flex; align-items: center; gap: 10px; font-size: 20px; }
         .info-grid { display: grid; grid-template-columns: 2fr 1fr 2fr; gap: 20px; margin-bottom: 20px; }
         .grid-inputs { display: grid; grid-template-columns: repeat(6, 1fr); gap: 15px; margin-bottom: 20px; }
         
@@ -88,7 +87,7 @@
 
         .card { padding: 40px; border-radius: 30px; backdrop-filter: blur(10px); border: 1px solid var(--accent-gold); background: rgba(26, 95, 122, 0.3); margin-bottom: 30px; text-align: center; }
         .card-title { font-weight: bold; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; margin-bottom: 25px; display: block; color: var(--accent-gold); font-size: 1.4em; }
-        .amount-highlight { font-size: 50px; font-weight: bold; color: white; display: block; margin: 10px 0; }
+        .amount-highlight { font-size: 60px; font-weight: bold; color: white; display: block; margin: 10px 0; }
 
         .bureau-section { overflow-x: auto; margin-top: 20px; background: rgba(0,0,0,0.2); border-radius: 20px; padding: 20px; border: 1px solid var(--glass-border); margin-bottom: 40px; }
         table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 1000px; }
@@ -133,15 +132,15 @@
             <img src="https://betofin.genspace.co.th/Logo-Trans.png" alt="Betofin Logo" class="logo-img"> 
             <div class="header-text">
                 <h1>Maximum Loan Estimator</h1>
-                <p style="margin: 5px 0 0 0; color: rgba(255,255,255,0.5); font-size: 13px; letter-spacing: 1.5px;">รายงานประเมินศักยภาพทางการเงินระดับพรีเมียม</p>
+                <p style="margin: 5px 0 0 0; color: rgba(255,255,255,0.5); font-size: 14px; letter-spacing: 1.5px;">รายงานประเมินศักยภาพทางการเงินระดับพรีเมียม</p>
             </div>
         </div>
 
-        <div class="section-title">ข้อมูลลูกค้าและโครงการ</div>
+        <div class="section-title">ข้อมูลลูกค้าและประวัติการทำงาน</div>
         <div class="info-grid">
             <div class="input-group"><label>ชื่อลูกค้า</label><input type="text" id="custName" placeholder="ระบุชื่อ"></div>
             <div class="input-group"><label>อายุ (ปี)</label><input type="number" id="custAge" placeholder="อายุ"></div>
-            <div class="input-group"><label>ชื่อโครงการ</label><input type="text" id="projName" placeholder="ระบุชื่อโครงการ"></div>
+            <div class="input-group"><label>ชื่อบริษัทที่ทำงาน</label><input type="text" id="projName" placeholder="ระบุชื่อบริษัทที่ทำงาน"></div>
         </div>
 
         <div class="section-title">เงื่อนไขการกู้ (DSR)</div>
@@ -188,9 +187,7 @@
                             <th style="width: 40px;">ลำดับ</th>
                             <th>รายการหัก</th>
                             <th>หมายเหตุ</th>
-                            <th>ยอดหนี้</th> 
-                            <th>วงเงินคงเหลือ</th> 
-                            <th>ยอดหัก/ด</th>
+                            <th>ยอดหนี้</th> <th>วงเงินคงเหลือ</th> <th>ยอดหัก/ด</th>
                             <th style="width: 110px;">การจัดการ</th>
                         </tr>
                     </thead>
@@ -211,9 +208,7 @@
                             <th>ประเภท</th>
                             <th>สถานะ</th>
                             <th>หมายเหตุ</th>
-                            <th>ยอดหนี้</th> 
-                            <th>วงเงินคงเหลือ</th> 
-                            <th>ค่างวด/ด</th>
+                            <th>ยอดหนี้</th> <th>วงเงินคงเหลือ</th> <th>ค่างวด/ด</th>
                             <th style="width: 110px;">การจัดการ</th>
                         </tr>
                     </thead>
@@ -366,7 +361,7 @@
         const element = document.getElementById('pdf-content');
         html2pdf().set({
             margin: 10,
-            filename: `Debt_Analysis_${cust}.pdf`,
+            filename: `Lead_Analysis_${cust}.pdf`,
             image: { type: 'jpeg', quality: 0.98 },
             html2canvas: { scale: 2, backgroundColor: '#0f0f0f' }, 
             jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' }
