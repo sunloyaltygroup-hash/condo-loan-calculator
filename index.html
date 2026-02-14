@@ -60,22 +60,25 @@
         .sel-btn.active { background: var(--gold-gradient); color: #000; border-color: transparent; box-shadow: 0 0 20px rgba(212, 175, 55, 0.4); }
 
         .card { padding: 30px; border-radius: 25px; backdrop-filter: blur(10px); border: 1px solid var(--accent-gold); background: rgba(26, 95, 122, 0.3); margin-bottom: 30px; text-align: center; }
-        .card-title { font-weight: bold; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; margin-bottom: 20px; display: block; color: var(--accent-gold); font-size: 1.2em; }
+        .card-title { font-weight: bold; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; margin-bottom: 15px; display: block; color: var(--accent-gold); font-size: 1.2em; }
         .amount-highlight { font-size: 48px; font-weight: bold; color: white; display: block; }
 
         /* ตารางบูโร */
         .bureau-section { overflow-x: auto; margin-top: 20px; background: rgba(0,0,0,0.2); border-radius: 15px; padding: 15px; border: 1px solid var(--glass-border); }
         table { width: 100%; border-collapse: collapse; font-size: 12px; min-width: 900px; }
         th { background: rgba(212, 175, 55, 0.2); color: var(--accent-gold); padding: 10px; text-align: left; border-bottom: 1px solid var(--glass-border); }
-        td { padding: 5px; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .table-input { background: transparent; border: 1px solid rgba(255,255,255,0.1); border-radius: 5px; padding: 5px; color: white; font-size: 12px; width: 100%; box-sizing: border-box; }
+        td { padding: 5px; border-bottom: 1px solid rgba(255,255,255,0.05); transition: 0.3s; }
+        .table-input { background: transparent; border: 1px solid rgba(255,255,255,0.1); border-radius: 5px; padding: 5px; color: white; font-size: 12px; width: 100%; box-sizing: border-box; transition: 0.3s; }
         
+        /* สไตล์สำหรับแถวที่ปิดหนี้ */
+        .row-closed { opacity: 0.35; background: rgba(220, 53, 69, 0.05); }
+        .row-closed .table-input { pointer-events: none; text-decoration: line-through; color: #ff8c94; }
+
         .btn-close-debt {
-            background: rgba(220, 53, 69, 0.2); border: 1px solid #dc3545; color: #ff8c94;
-            padding: 4px 8px; border-radius: 6px; cursor: pointer; font-size: 10px; transition: 0.3s;
-            white-space: nowrap;
+            background: rgba(255, 255, 255, 0.05); border: 1px solid var(--accent-gold); color: var(--accent-gold);
+            padding: 5px 12px; border-radius: 6px; cursor: pointer; font-size: 11px; transition: 0.3s; white-space: nowrap;
         }
-        .btn-close-debt:hover { background: #dc3545; color: white; }
+        .btn-close-debt.active { background: #dc3545; border-color: #dc3545; color: white; }
 
         .add-row-btn {
             background: rgba(255,255,255,0.1); border: 1px dashed var(--accent-gold); color: var(--accent-gold);
@@ -83,7 +86,12 @@
         }
         .add-row-btn:hover { background: rgba(212, 175, 55, 0.2); }
 
-        .net-result { margin-top: 20px; padding: 15px; background: rgba(40, 167, 69, 0.2); border-radius: 15px; border: 1px solid #28a745; text-align: right; }
+        .net-result { margin-top: 25px; padding: 20px; background: rgba(0,0,0,0.3); border-radius: 20px; border-left: 5px solid var(--accent-gold); text-align: right; }
+        .result-row { display: flex; justify-content: flex-end; gap: 20px; margin: 5px 0; align-items: center; }
+        .result-label { color: rgba(255,255,255,0.7); font-size: 14px; }
+        .result-value { color: #fff; font-weight: bold; min-width: 150px; }
+        .highlight-capacity { font-size: 1.6em; color: var(--accent-gold); border-top: 1px solid rgba(255,255,255,0.1); margin-top: 10px; padding-top: 10px; }
+        .closing-sum { color: #ff8c94; font-weight: bold; }
 
         .btn-pdf { width: 100%; padding: 18px; background: var(--gold-gradient); color: #000; border: none; border-radius: 15px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 30px; display: flex; justify-content: center; gap: 10px; }
 
@@ -100,7 +108,7 @@
             <p style="margin: 10px 0 0 0; color: rgba(255,255,255,0.5); font-size: 13px; letter-spacing: 1px;">รายงานประเมินภาระหนี้และศักยภาพการผ่อน</p>
         </div>
 
-        <div class="section-title">ข้อมูลลูกค้าและโครงการ</div>
+        <div class="section-title"><i class="fa-solid fa-address-card"></i> ข้อมูลลูกค้าและโครงการ</div>
         <div class="info-grid">
             <div class="input-group"><label>ชื่อลูกค้า</label><input type="text" id="custName" placeholder="ระบุชื่อ"></div>
             <div class="input-group"><label>อายุ (ปี)</label><input type="number" id="custAge" placeholder="อายุ"></div>
@@ -156,7 +164,7 @@
                             <th>วงเงิน</th>
                             <th>ยอดหนี้</th>
                             <th>ค่างวด/ด</th>
-                            <th style="width: 80px;">จัดการ</th>
+                            <th style="width: 100px;">การจัดการ</th>
                         </tr>
                     </thead>
                     <tbody id="bureau-body"></tbody>
@@ -165,9 +173,17 @@
             </div>
 
             <div class="net-result">
-                <div>รวมภาระหนี้ปัจจุบัน: <span id="total-debt-val">0</span> บาท</div>
-                <div style="font-size: 1.4em; font-weight: bold; color: #fff; margin-top: 5px;">
-                    คงเหลือความสามารถผ่อนจริง: <span id="net-capacity-val">0</span> บาท/ด.
+                <div class="result-row">
+                    <span class="result-label">รวมภาระหนี้รายเดือนปัจจุบัน:</span>
+                    <span class="result-value"><span id="total-debt-val">0</span> บาท</span>
+                </div>
+                <div class="result-row">
+                    <span class="result-label">ยอดรวมเงินที่ต้องใช้ปิดหนี้ (สะสม):</span>
+                    <span class="result-value closing-sum"><span id="total-closing-sum">0</span> บาท</span>
+                </div>
+                <div class="result-row highlight-capacity">
+                    <span class="result-label" style="color:var(--accent-gold)">คงเหลือความสามารถผ่อนจริง:</span>
+                    <span class="result-value"><span id="net-capacity-val">0</span> บาท/ด.</span>
                 </div>
             </div>
         </div>
@@ -191,6 +207,7 @@
         bureauRowCount++;
         const tbody = document.getElementById('bureau-body');
         const row = document.createElement('tr');
+        row.dataset.closed = "false";
         row.innerHTML = `
             <td><input type="text" class="table-input" value="${bureauRowCount}" style="text-align:center;"></td>
             <td><input type="text" class="table-input" placeholder="-"></td>
@@ -200,29 +217,27 @@
             <td><input type="number" class="table-input" value="0" oninput="calculateAll()"></td>
             <td><input type="number" class="table-input debt-amount" value="0" oninput="calculateAll()"></td>
             <td><input type="number" class="table-input debt-installment" value="0" oninput="calculateAll()"></td>
-            <td style="text-align:center;"><button type="button" class="btn-close-debt" onclick="closeDebt(this)">ปิดหนี้</button></td>
+            <td style="text-align:center;"><button type="button" class="btn-close-debt" onclick="toggleDebtRow(this)">ปิดหนี้</button></td>
         `;
         tbody.appendChild(row);
     }
 
-    // ฟังก์ชันปิดหนี้ในแถวนั้นๆ
-    function closeDebt(btn) {
+    // ฟังก์ชันใหม่: สลับสถานะจางลง แต่ไม่เปลี่ยนค่าในช่อง
+    function toggleDebtRow(btn) {
         const row = btn.closest('tr');
-        const amountInput = row.querySelector('.debt-amount');
-        const installmentInput = row.querySelector('.debt-installment');
+        const isClosed = row.dataset.closed === "true";
         
-        // ตั้งค่าเป็น 0
-        amountInput.value = 0;
-        installmentInput.value = 0;
-        
-        // ใส่ Effect เพื่อให้รู้ว่าแถวนี้ปิดหนี้แล้ว
-        row.style.opacity = "0.6";
-        btn.innerText = "ปิดแล้ว";
-        btn.disabled = true;
-        btn.style.background = "rgba(40, 167, 69, 0.4)";
-        btn.style.borderColor = "#28a745";
-        btn.style.color = "#fff";
-
+        if (!isClosed) {
+            row.dataset.closed = "true";
+            row.classList.add('row-closed');
+            btn.innerText = "ยกเลิกปิดหนี้";
+            btn.classList.add('active');
+        } else {
+            row.dataset.closed = "false";
+            row.classList.remove('row-closed');
+            btn.innerText = "ปิดหนี้";
+            btn.classList.remove('active');
+        }
         calculateAll();
     }
 
@@ -250,13 +265,25 @@
         const maxCapacity = netIncome * currentDSR;
         document.getElementById('pay-val').innerText = Math.floor(maxCapacity).toLocaleString();
 
-        let totalBureauDebt = 0;
-        document.querySelectorAll('.debt-installment').forEach(input => {
-            totalBureauDebt += parseFloat(input.value || 0);
-        });
-        document.getElementById('total-debt-val').innerText = totalBureauDebt.toLocaleString();
+        let activeMonthlyDebt = 0;
+        let totalClosingSum = 0;
 
-        const netCapacity = maxCapacity - totalBureauDebt;
+        document.querySelectorAll('#bureau-body tr').forEach(row => {
+            const debt = parseFloat(row.querySelector('.debt-amount').value || 0);
+            const installment = parseFloat(row.querySelector('.debt-installment').value || 0);
+            
+            if (row.dataset.closed === "true") {
+                totalClosingSum += debt; // เอายอดหนี้ไปรวมในยอดปิด
+                // ไม่เอา installment ไปบวกในภาระหนี้ปัจจุบัน
+            } else {
+                activeMonthlyDebt += installment; // เอาค่างวดปกติไปบวกภาระหนี้
+            }
+        });
+
+        document.getElementById('total-debt-val').innerText = activeMonthlyDebt.toLocaleString();
+        document.getElementById('total-closing-sum').innerText = totalClosingSum.toLocaleString();
+
+        const netCapacity = maxCapacity - activeMonthlyDebt;
         document.getElementById('net-capacity-val').innerText = Math.floor(netCapacity).toLocaleString();
     }
 
