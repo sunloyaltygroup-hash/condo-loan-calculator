@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Debt Load Estimator - Bureau Edition</title>
+    <title>Debt Load Estimator - Widescreen Edition</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -25,78 +25,88 @@
             margin: 0; padding: 20px; color: var(--primary-text); line-height: 1.6;
         }
 
+        /* 1. ขยายพื้นที่ทำงานเป็น 1400px */
         .container {
-            max-width: 1100px; margin: auto; background: var(--glass-bg);
+            max-width: 1400px; 
+            margin: auto; background: var(--glass-bg);
             backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--glass-border); border-radius: 30px;
-            padding: 30px; box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8); box-sizing: border-box;
+            padding: 40px; box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8); box-sizing: border-box;
         }
 
         .header-box { text-align: center; margin-bottom: 30px; border-bottom: 1px solid var(--glass-border); padding-bottom: 20px; }
-        h1 { font-size: clamp(20px, 5vw, 32px); margin: 0; text-transform: uppercase; letter-spacing: 3px; color: #ffffff; font-weight: 700; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
+        h1 { font-size: clamp(24px, 5vw, 36px); margin: 0; text-transform: uppercase; letter-spacing: 3px; color: #ffffff; font-weight: 700; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
 
-        .section-title { font-weight: bold; color: var(--accent-gold); margin: 25px 0 15px 0; display: flex; align-items: center; gap: 10px; font-size: 18px; }
+        .section-title { font-weight: bold; color: var(--accent-gold); margin: 25px 0 15px 0; display: flex; align-items: center; gap: 10px; font-size: 20px; }
         .info-grid { display: grid; grid-template-columns: 2fr 1fr 2fr; gap: 20px; margin-bottom: 20px; }
-        .grid-inputs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 20px; }
+
+        /* 2. ปรับช่องรายได้ให้เป็น 6 คอลัมน์ (เรียงแถวเดียวบน PC) */
+        .grid-inputs { display: grid; grid-template-columns: repeat(6, 1fr); gap: 15px; margin-bottom: 20px; }
+        
         .input-group { display: flex; flex-direction: column; width: 100%; }
         label { margin-bottom: 8px; font-size: 13px; font-weight: bold; color: rgba(255,255,255,0.7); }
 
         input {
             background: rgba(255, 255, 255, 0.05); border: 1px solid var(--glass-border);
-            border-radius: 12px; padding: 10px; color: white; font-size: 14px;
+            border-radius: 12px; padding: 12px; color: white; font-size: 15px;
             width: 100%; box-sizing: border-box; transition: 0.3s;
         }
         input:focus { border-color: var(--accent-gold); outline: none; background: rgba(255, 255, 255, 0.15); }
 
         .income-summary-table {
-            background: rgba(0, 0, 0, 0.4); border-radius: 20px; padding: 20px; margin: 25px 0;
+            background: rgba(0, 0, 0, 0.4); border-radius: 20px; padding: 25px; margin: 25px 0;
             border: 1px solid rgba(212, 175, 55, 0.2);
         }
-        .summary-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .summary-row:last-child { border-bottom: none; font-weight: bold; color: var(--accent-gold); font-size: 1.1em; padding-top: 15px; }
+        .summary-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .summary-row:last-child { border-bottom: none; font-weight: bold; color: var(--accent-gold); font-size: 1.2em; padding-top: 15px; }
 
-        .dsr-selector { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px; }
-        .sel-btn { padding: 15px; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--glass-border); border-radius: 15px; color: white; font-weight: bold; cursor: pointer; transition: 0.3s; text-align: center; }
+        .dsr-selector { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px; }
+        .sel-btn { padding: 18px; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--glass-border); border-radius: 15px; color: white; font-weight: bold; cursor: pointer; transition: 0.3s; text-align: center; font-size: 16px; }
         .sel-btn.active { background: var(--gold-gradient); color: #000; border-color: transparent; box-shadow: 0 0 20px rgba(212, 175, 55, 0.4); }
 
-        .card { padding: 30px; border-radius: 25px; backdrop-filter: blur(10px); border: 1px solid var(--accent-gold); background: rgba(26, 95, 122, 0.3); margin-bottom: 30px; text-align: center; }
-        .card-title { font-weight: bold; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; margin-bottom: 15px; display: block; color: var(--accent-gold); font-size: 1.2em; }
-        .amount-highlight { font-size: 48px; font-weight: bold; color: white; display: block; }
+        .card { padding: 40px; border-radius: 30px; backdrop-filter: blur(10px); border: 1px solid var(--accent-gold); background: rgba(26, 95, 122, 0.3); margin-bottom: 30px; text-align: center; }
+        .card-title { font-weight: bold; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; margin-bottom: 25px; display: block; color: var(--accent-gold); font-size: 1.4em; }
+        .amount-highlight { font-size: 60px; font-weight: bold; color: white; display: block; margin: 10px 0; }
 
-        /* ตารางบูโร */
-        .bureau-section { overflow-x: auto; margin-top: 20px; background: rgba(0,0,0,0.2); border-radius: 15px; padding: 15px; border: 1px solid var(--glass-border); }
-        table { width: 100%; border-collapse: collapse; font-size: 12px; min-width: 900px; }
-        th { background: rgba(212, 175, 55, 0.2); color: var(--accent-gold); padding: 10px; text-align: left; border-bottom: 1px solid var(--glass-border); }
-        td { padding: 5px; border-bottom: 1px solid rgba(255,255,255,0.05); transition: 0.3s; }
-        .table-input { background: transparent; border: 1px solid rgba(255,255,255,0.1); border-radius: 5px; padding: 5px; color: white; font-size: 12px; width: 100%; box-sizing: border-box; transition: 0.3s; }
+        /* ตารางบูโรขยายกว้างขึ้น */
+        .bureau-section { overflow-x: auto; margin-top: 20px; background: rgba(0,0,0,0.2); border-radius: 20px; padding: 20px; border: 1px solid var(--glass-border); }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 1000px; }
+        th { background: rgba(212, 175, 55, 0.2); color: var(--accent-gold); padding: 15px; text-align: left; border-bottom: 1px solid var(--glass-border); }
+        td { padding: 8px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .table-input { background: transparent; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 8px; color: white; font-size: 13px; width: 100%; box-sizing: border-box; }
         
-        /* สไตล์สำหรับแถวที่ปิดหนี้ */
         .row-closed { opacity: 0.35; background: rgba(220, 53, 69, 0.05); }
         .row-closed .table-input { pointer-events: none; text-decoration: line-through; color: #ff8c94; }
 
         .btn-close-debt {
             background: rgba(255, 255, 255, 0.05); border: 1px solid var(--accent-gold); color: var(--accent-gold);
-            padding: 5px 12px; border-radius: 6px; cursor: pointer; font-size: 11px; transition: 0.3s; white-space: nowrap;
+            padding: 6px 15px; border-radius: 8px; cursor: pointer; font-size: 12px; transition: 0.3s;
         }
         .btn-close-debt.active { background: #dc3545; border-color: #dc3545; color: white; }
 
         .add-row-btn {
-            background: rgba(255,255,255,0.1); border: 1px dashed var(--accent-gold); color: var(--accent-gold);
-            padding: 8px 20px; border-radius: 10px; cursor: pointer; margin-top: 15px; font-weight: bold; transition: 0.3s;
+            background: rgba(255, 255, 255, 0.1); border: 1px dashed var(--accent-gold); color: var(--accent-gold);
+            padding: 10px 30px; border-radius: 12px; cursor: pointer; margin-top: 20px; font-weight: bold;
         }
-        .add-row-btn:hover { background: rgba(212, 175, 55, 0.2); }
 
-        .net-result { margin-top: 25px; padding: 20px; background: rgba(0,0,0,0.3); border-radius: 20px; border-left: 5px solid var(--accent-gold); text-align: right; }
-        .result-row { display: flex; justify-content: flex-end; gap: 20px; margin: 5px 0; align-items: center; }
-        .result-label { color: rgba(255,255,255,0.7); font-size: 14px; }
-        .result-value { color: #fff; font-weight: bold; min-width: 150px; }
-        .highlight-capacity { font-size: 1.6em; color: var(--accent-gold); border-top: 1px solid rgba(255,255,255,0.1); margin-top: 10px; padding-top: 10px; }
-        .closing-sum { color: #ff8c94; font-weight: bold; }
+        .net-result { margin-top: 30px; padding: 25px; background: rgba(0,0,0,0.3); border-radius: 25px; border-left: 6px solid var(--accent-gold); text-align: right; }
+        .result-row { display: flex; justify-content: flex-end; gap: 30px; margin: 8px 0; align-items: center; }
+        .highlight-capacity { font-size: 2em; color: var(--accent-gold); border-top: 1px solid rgba(255,255,255,0.1); margin-top: 15px; padding-top: 15px; }
 
-        .btn-pdf { width: 100%; padding: 18px; background: var(--gold-gradient); color: #000; border: none; border-radius: 15px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 30px; display: flex; justify-content: center; gap: 10px; }
+        .btn-pdf { width: 100%; padding: 20px; background: var(--gold-gradient); color: #000; border: none; border-radius: 20px; font-size: 20px; font-weight: bold; cursor: pointer; margin-top: 40px; }
 
-        @media (max-width: 768px) { .grid-inputs, .info-grid { grid-template-columns: 1fr 1fr; } }
-        @media (max-width: 480px) { .grid-inputs, .info-grid, .dsr-selector { grid-template-columns: 1fr; } }
+        /* Media Queries - รักษาการใช้งานบนมือถือ */
+        @media (max-width: 1024px) {
+            .grid-inputs { grid-template-columns: repeat(3, 1fr); }
+            .container { padding: 25px; }
+        }
+        @media (max-width: 768px) {
+            .grid-inputs { grid-template-columns: 1fr 1fr; }
+            .info-grid { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 480px) {
+            .grid-inputs, .info-grid, .dsr-selector { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
@@ -104,11 +114,11 @@
 <div class="container">
     <div id="pdf-content">
         <div class="header-box">
-            <h1>Debt Load Estimator</h1>
-            <p style="margin: 10px 0 0 0; color: rgba(255,255,255,0.5); font-size: 13px; letter-spacing: 1px;">รายงานประเมินภาระหนี้และศักยภาพการผ่อน</p>
+            <h1>Maximum Loan Estimator</h1>
+            <p style="margin: 10px 0 0 0; color: rgba(255,255,255,0.5); font-size: 14px; letter-spacing: 1.5px;">รายงานประเมินศักยภาพทางการเงินระดับพรีเมียม</p>
         </div>
 
-        <div class="section-title"><i class="fa-solid fa-address-card"></i> ข้อมูลลูกค้าและโครงการ</div>
+        <div class="section-title">ข้อมูลลูกค้าและโครงการ</div>
         <div class="info-grid">
             <div class="input-group"><label>ชื่อลูกค้า</label><input type="text" id="custName" placeholder="ระบุชื่อ"></div>
             <div class="input-group"><label>อายุ (ปี)</label><input type="number" id="custAge" placeholder="อายุ"></div>
@@ -131,7 +141,7 @@
             <div class="input-group"><label>เดือนที่ 6</label><input type="number" class="inc-input" value="0" oninput="calculateAll()"></div>
         </div>
 
-        <div class="input-group" style="margin-top: 15px;">
+        <div class="input-group" style="margin-top: 15px; max-width: 300px;">
             <label>โบนัสรวมทั้งปี (บาท)</label>
             <input type="number" id="bonus" value="0" oninput="calculateAll()">
         </div>
@@ -145,11 +155,11 @@
 
         <div id="result-card" class="card" style="display: block;">
             <span class="card-title" id="res-title">CASE: พนักงานทั่วไป</span>
-            <div style="font-size: 1.1em; color: rgba(255,255,255,0.8);">ภาระหนี้สูงสุดที่รับได้ต่อเดือน:</div>
+            <div style="font-size: 1.2em; color: rgba(255,255,255,0.8);">ภาระหนี้สูงสุดที่รับได้ต่อเดือน:</div>
             <span class="amount-highlight" id="pay-val">0</span>
-            <div style="color: var(--accent-gold); font-weight: bold;">บาท / เดือน</div>
+            <div style="color: var(--accent-gold); font-weight: bold; font-size: 1.1em;">บาท / เดือน</div>
 
-            <div class="section-title" style="justify-content: center; margin-top: 30px;">
+            <div class="section-title" style="justify-content: center; margin-top: 40px;">
                 <i class="fa-solid fa-table-list"></i> รายละเอียดสถานะหนี้ บูโร
             </div>
             <div class="bureau-section">
@@ -164,7 +174,7 @@
                             <th>วงเงิน</th>
                             <th>ยอดหนี้</th>
                             <th>ค่างวด/ด</th>
-                            <th style="width: 100px;">การจัดการ</th>
+                            <th style="width: 110px;">การจัดการ</th>
                         </tr>
                     </thead>
                     <tbody id="bureau-body"></tbody>
@@ -179,7 +189,7 @@
                 </div>
                 <div class="result-row">
                     <span class="result-label">ยอดรวมเงินที่ต้องใช้ปิดหนี้ (สะสม):</span>
-                    <span class="result-value closing-sum"><span id="total-closing-sum">0</span> บาท</span>
+                    <span class="result-value" style="color:#ff8c94;"><span id="total-closing-sum">0</span> บาท</span>
                 </div>
                 <div class="result-row highlight-capacity">
                     <span class="result-label" style="color:var(--accent-gold)">คงเหลือความสามารถผ่อนจริง:</span>
@@ -190,7 +200,7 @@
     </div>
 
     <button class="btn-pdf" onclick="savePDF()">
-        <i class="fa-solid fa-file-pdf"></i> ดาวน์โหลดรายงานวิเคราะห์หนี้ (PDF)
+        <i class="fa-solid fa-file-pdf"></i> ดาวน์โหลดรายงานฉบับกว้างพิเศษ (PDF)
     </button>
 </div>
 
@@ -222,15 +232,13 @@
         tbody.appendChild(row);
     }
 
-    // ฟังก์ชันใหม่: สลับสถานะจางลง แต่ไม่เปลี่ยนค่าในช่อง
     function toggleDebtRow(btn) {
         const row = btn.closest('tr');
         const isClosed = row.dataset.closed === "true";
-        
         if (!isClosed) {
             row.dataset.closed = "true";
             row.classList.add('row-closed');
-            btn.innerText = "ยกเลิกปิดหนี้";
+            btn.innerText = "ยกเลิกปิด";
             btn.classList.add('active');
         } else {
             row.dataset.closed = "false";
@@ -271,20 +279,16 @@
         document.querySelectorAll('#bureau-body tr').forEach(row => {
             const debt = parseFloat(row.querySelector('.debt-amount').value || 0);
             const installment = parseFloat(row.querySelector('.debt-installment').value || 0);
-            
             if (row.dataset.closed === "true") {
-                totalClosingSum += debt; // เอายอดหนี้ไปรวมในยอดปิด
-                // ไม่เอา installment ไปบวกในภาระหนี้ปัจจุบัน
+                totalClosingSum += debt;
             } else {
-                activeMonthlyDebt += installment; // เอาค่างวดปกติไปบวกภาระหนี้
+                activeMonthlyDebt += installment;
             }
         });
 
         document.getElementById('total-debt-val').innerText = activeMonthlyDebt.toLocaleString();
         document.getElementById('total-closing-sum').innerText = totalClosingSum.toLocaleString();
-
-        const netCapacity = maxCapacity - activeMonthlyDebt;
-        document.getElementById('net-capacity-val').innerText = Math.floor(netCapacity).toLocaleString();
+        document.getElementById('net-capacity-val').innerText = Math.floor(maxCapacity - activeMonthlyDebt).toLocaleString();
     }
 
     function savePDF() {
@@ -292,10 +296,10 @@
         const element = document.getElementById('pdf-content');
         html2pdf().set({
             margin: 10,
-            filename: `Debt_Analysis_${cust}.pdf`,
+            filename: `Widescreen_Analysis_${cust}.pdf`,
             image: { type: 'jpeg', quality: 0.98 },
             html2canvas: { scale: 2, backgroundColor: '#0f0f0f' }, 
-            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' } // ปรับ PDF เป็นแนวนอนเพื่อให้รับกับความกว้าง
         }).from(element).save();
     }
 </script>
