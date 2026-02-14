@@ -155,7 +155,9 @@
                             <th style="width: 40px;">ลำดับ</th>
                             <th>รายการหัก</th>
                             <th>หมายเหตุ</th>
-                            <th>ยอดหนี้</th> <th>วงเงินคงเหลือ</th> <th>ยอดหัก/ด</th>
+                            <th>ยอดหนี้</th>
+                            <th>วงเงินคงเหลือ</th> 
+                            <th>ยอดหัก/ด</th>
                             <th style="width: 110px;">การจัดการ</th>
                         </tr>
                     </thead>
@@ -176,7 +178,9 @@
                             <th>ประเภท</th>
                             <th>สถานะ</th>
                             <th>หมายเหตุ</th>
-                            <th>ยอดหนี้</th> <th>วงเงินคงเหลือ</th> <th>ค่างวด/ด</th>
+                            <th>ยอดหนี้</th>
+                            <th>วงเงินคงเหลือ</th>
+                            <th>ค่างวด/ด</th>
                             <th style="width: 110px;">การจัดการ</th>
                         </tr>
                     </thead>
@@ -195,7 +199,7 @@
                     <span class="result-value"><span id="total-debt-val">0</span> บาท</span>
                 </div>
                 <div class="result-row">
-                    <span class="result-label">ยอดรวมเงินที่ต้องใช้ปิดหนี้ (สะสม):</span>
+                    <span class="result-label">ยอดรวมเงินที่ต้องใช้ปิดหนี้ (สะสมจากวงเงินคงเหลือ):</span>
                     <span class="result-value" style="color:#ff8c94;"><span id="total-closing-sum">0</span> บาท</span>
                 </div>
                 <div class="result-row highlight-capacity">
@@ -234,7 +238,7 @@
             <td><input type="text" class="table-input" value="${prefillText}" placeholder="เช่น สหกรณ์"></td>
             <td><input type="text" class="table-input" placeholder="-"></td>
             <td><input type="number" class="table-input debt-amount" value="0" oninput="calculateAll()"></td>
-            <td><input type="number" class="table-input" value="0" oninput="calculateAll()"></td>
+            <td><input type="number" class="table-input remaining-balance" value="0" oninput="calculateAll()"></td>
             <td><input type="number" class="table-input debt-installment" value="0" oninput="calculateAll()"></td>
             <td style="text-align:center;"><button type="button" class="btn-close-debt" onclick="toggleRow(this)">ปิดหนี้</button></td>
         `;
@@ -253,7 +257,7 @@
             <td><input type="text" class="table-input" placeholder="-"></td>
             <td><input type="text" class="table-input" placeholder="-"></td>
             <td><input type="number" class="table-input debt-amount" value="0" oninput="calculateAll()"></td>
-            <td><input type="number" class="table-input" value="0" oninput="calculateAll()"></td>
+            <td><input type="number" class="table-input remaining-balance" value="0" oninput="calculateAll()"></td>
             <td><input type="number" class="table-input debt-installment" value="0" oninput="calculateAll()"></td>
             <td style="text-align:center;"><button type="button" class="btn-close-debt" onclick="toggleRow(this)">ปิดหนี้</button></td>
         `;
@@ -305,23 +309,19 @@
         let totalBureauInstallment = 0;
         let totalClosingSum = 0;
 
-        document.querySelectorAll('#slip-body tr').forEach(row => {
-            const debt = parseFloat(row.querySelector('.debt-amount').value || 0);
+        // คำนวณทุกแถวในสลิปและบูโร
+        document.querySelectorAll('#slip-body tr, #bureau-body tr').forEach(row => {
+            const remainingBalance = parseFloat(row.querySelector('.remaining-balance').value || 0);
             const installment = parseFloat(row.querySelector('.debt-installment').value || 0);
-            if (row.dataset.closed === "true") {
-                totalClosingSum += debt;
-            } else {
-                totalSlipInstallment += installment;
-            }
-        });
+            const isSlip = row.closest('tbody').id === 'slip-body';
 
-        document.querySelectorAll('#bureau-body tr').forEach(row => {
-            const debt = parseFloat(row.querySelector('.debt-amount').value || 0);
-            const installment = parseFloat(row.querySelector('.debt-installment').value || 0);
             if (row.dataset.closed === "true") {
-                totalClosingSum += debt;
+                // ถ้าปิดหนี้ ให้นำ "วงเงินคงเหลือ" ไปรวมในยอดสะสม
+                totalClosingSum += remainingBalance;
             } else {
-                totalBureauInstallment += installment;
+                // ถ้าไม่ปิด ให้นำค่างวดไปบวกในภาระรายเดือนปกติ
+                if (isSlip) totalSlipInstallment += installment;
+                else totalBureauInstallment += installment;
             }
         });
 
