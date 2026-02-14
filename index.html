@@ -26,7 +26,7 @@
         }
 
         .container {
-            max-width: 1000px; margin: auto; background: var(--glass-bg);
+            max-width: 1100px; margin: auto; background: var(--glass-bg);
             backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--glass-border); border-radius: 30px;
             padding: 30px; box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8); box-sizing: border-box;
@@ -59,18 +59,24 @@
         .sel-btn { padding: 15px; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--glass-border); border-radius: 15px; color: white; font-weight: bold; cursor: pointer; transition: 0.3s; text-align: center; }
         .sel-btn.active { background: var(--gold-gradient); color: #000; border-color: transparent; box-shadow: 0 0 20px rgba(212, 175, 55, 0.4); }
 
-        /* การ์ดผลลัพธ์ */
         .card { padding: 30px; border-radius: 25px; backdrop-filter: blur(10px); border: 1px solid var(--accent-gold); background: rgba(26, 95, 122, 0.3); margin-bottom: 30px; text-align: center; }
         .card-title { font-weight: bold; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; margin-bottom: 20px; display: block; color: var(--accent-gold); font-size: 1.2em; }
         .amount-highlight { font-size: 48px; font-weight: bold; color: white; display: block; }
 
         /* ตารางบูโร */
         .bureau-section { overflow-x: auto; margin-top: 20px; background: rgba(0,0,0,0.2); border-radius: 15px; padding: 15px; border: 1px solid var(--glass-border); }
-        table { width: 100%; border-collapse: collapse; font-size: 12px; min-width: 800px; }
+        table { width: 100%; border-collapse: collapse; font-size: 12px; min-width: 900px; }
         th { background: rgba(212, 175, 55, 0.2); color: var(--accent-gold); padding: 10px; text-align: left; border-bottom: 1px solid var(--glass-border); }
         td { padding: 5px; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .table-input { background: transparent; border: 1px solid rgba(255,255,255,0.1); border-radius: 5px; padding: 5px; color: white; font-size: 12px; }
+        .table-input { background: transparent; border: 1px solid rgba(255,255,255,0.1); border-radius: 5px; padding: 5px; color: white; font-size: 12px; width: 100%; box-sizing: border-box; }
         
+        .btn-close-debt {
+            background: rgba(220, 53, 69, 0.2); border: 1px solid #dc3545; color: #ff8c94;
+            padding: 4px 8px; border-radius: 6px; cursor: pointer; font-size: 10px; transition: 0.3s;
+            white-space: nowrap;
+        }
+        .btn-close-debt:hover { background: #dc3545; color: white; }
+
         .add-row-btn {
             background: rgba(255,255,255,0.1); border: 1px dashed var(--accent-gold); color: var(--accent-gold);
             padding: 8px 20px; border-radius: 10px; cursor: pointer; margin-top: 15px; font-weight: bold; transition: 0.3s;
@@ -142,7 +148,7 @@
                 <table id="bureau-table">
                     <thead>
                         <tr>
-                            <th style="width: 50px;">บัญชี</th>
+                            <th style="width: 40px;">บัญชี</th>
                             <th>ผู้ให้สินเชื่อ</th>
                             <th>ประเภท</th>
                             <th>สถานะ</th>
@@ -150,10 +156,10 @@
                             <th>วงเงิน</th>
                             <th>ยอดหนี้</th>
                             <th>ค่างวด/ด</th>
+                            <th style="width: 80px;">จัดการ</th>
                         </tr>
                     </thead>
-                    <tbody id="bureau-body">
-                        </tbody>
+                    <tbody id="bureau-body"></tbody>
                 </table>
                 <button type="button" class="add-row-btn" onclick="addBureauRow()">+ เพิ่มแถวบัญชีใหม่</button>
             </div>
@@ -176,7 +182,6 @@
     let currentDSR = 0.5;
     let bureauRowCount = 0;
 
-    // สร้างแถวเริ่มต้น 5 แถว
     window.onload = function() {
         for(let i=0; i<5; i++) addBureauRow();
         calculateAll();
@@ -193,10 +198,32 @@
             <td><input type="text" class="table-input" placeholder="-"></td>
             <td><input type="text" class="table-input" placeholder="-"></td>
             <td><input type="number" class="table-input" value="0" oninput="calculateAll()"></td>
-            <td><input type="number" class="table-input" value="0" oninput="calculateAll()"></td>
+            <td><input type="number" class="table-input debt-amount" value="0" oninput="calculateAll()"></td>
             <td><input type="number" class="table-input debt-installment" value="0" oninput="calculateAll()"></td>
+            <td style="text-align:center;"><button type="button" class="btn-close-debt" onclick="closeDebt(this)">ปิดหนี้</button></td>
         `;
         tbody.appendChild(row);
+    }
+
+    // ฟังก์ชันปิดหนี้ในแถวนั้นๆ
+    function closeDebt(btn) {
+        const row = btn.closest('tr');
+        const amountInput = row.querySelector('.debt-amount');
+        const installmentInput = row.querySelector('.debt-installment');
+        
+        // ตั้งค่าเป็น 0
+        amountInput.value = 0;
+        installmentInput.value = 0;
+        
+        // ใส่ Effect เพื่อให้รู้ว่าแถวนี้ปิดหนี้แล้ว
+        row.style.opacity = "0.6";
+        btn.innerText = "ปิดแล้ว";
+        btn.disabled = true;
+        btn.style.background = "rgba(40, 167, 69, 0.4)";
+        btn.style.borderColor = "#28a745";
+        btn.style.color = "#fff";
+
+        calculateAll();
     }
 
     function setDSR(val, mode) {
@@ -220,18 +247,15 @@
         document.getElementById('bonus-avg').innerText = bonus12.toLocaleString(undefined, {minimumFractionDigits: 0}) + " บาท";
         document.getElementById('disp-net').innerText = netIncome.toLocaleString(undefined, {minimumFractionDigits: 0}) + " บาท";
 
-        // 1. ภาระหนี้สูงสุดตาม DSR
         const maxCapacity = netIncome * currentDSR;
         document.getElementById('pay-val').innerText = Math.floor(maxCapacity).toLocaleString();
 
-        // 2. รวมหนี้จากตาราง
         let totalBureauDebt = 0;
         document.querySelectorAll('.debt-installment').forEach(input => {
             totalBureauDebt += parseFloat(input.value || 0);
         });
         document.getElementById('total-debt-val').innerText = totalBureauDebt.toLocaleString();
 
-        // 3. คงเหลือสุทธิ
         const netCapacity = maxCapacity - totalBureauDebt;
         document.getElementById('net-capacity-val').innerText = Math.floor(netCapacity).toLocaleString();
     }
