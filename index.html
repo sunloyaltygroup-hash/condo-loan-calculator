@@ -56,12 +56,13 @@
         .input-group { display: flex; flex-direction: column; width: 100%; }
         label { margin-bottom: 8px; font-size: 13px; font-weight: bold; color: rgba(255,255,255,0.7); }
 
-        input {
+        input, textarea {
             background: rgba(255, 255, 255, 0.05); border: 1px solid var(--glass-border);
             border-radius: 12px; padding: 12px; color: white; font-size: 15px;
             width: 100%; box-sizing: border-box; transition: 0.3s;
+            font-family: 'Sarabun', sans-serif;
         }
-        input:focus { border-color: var(--accent-gold); outline: none; background: rgba(255, 255, 255, 0.15); }
+        input:focus, textarea:focus { border-color: var(--accent-gold); outline: none; background: rgba(255, 255, 255, 0.15); }
         .readonly-box { background: rgba(0,0,0,0.3); color: var(--accent-gold); font-weight: bold; }
 
         .income-summary-table {
@@ -102,7 +103,6 @@
         .result-row { display: flex; justify-content: flex-end; gap: 30px; margin: 8px 0; align-items: center; }
         .highlight-capacity { font-size: 1.8em; color: var(--accent-gold); border-top: 1px solid rgba(255,255,255,0.1); margin-top: 10px; padding-top: 15px; }
 
-        /* ส่วนใหม่: Estimate พรีวงเงิน */
         .estimate-section {
             margin-top: 35px; padding: 30px; border-radius: 25px;
             background: var(--estimate-bg); border: 2px solid var(--accent-gold);
@@ -111,6 +111,10 @@
         .estimate-title { font-size: 22px; font-weight: bold; color: #FCF6BA; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; }
         .estimate-value { font-size: 56px; font-weight: bold; color: #ffffff; text-shadow: 0 4px 15px rgba(0,0,0,0.5); }
         .estimate-unit { font-size: 20px; color: #FCF6BA; font-weight: bold; margin-top: 5px; }
+
+        /* ส่วน Comment */
+        .comment-section { margin-top: 30px; text-align: left; }
+        .comment-box { width: 100%; min-height: 120px; resize: vertical; margin-top: 10px; }
 
         .btn-pdf { width: 100%; padding: 20px; background: var(--gold-gradient); color: #000; border: none; border-radius: 20px; font-size: 20px; font-weight: bold; cursor: pointer; margin-top: 40px; }
 
@@ -132,7 +136,7 @@
             </div>
         </div>
 
-        <div class="section-title">ข้อมูลลูกค้าและประวัติการทำงาน</div>
+        <div class="section-title"><i class="fa-solid fa-address-card"></i> ข้อมูลลูกค้าและประวัติการทำงาน</div>
         <div class="info-grid">
             <div class="input-group"><label>ชื่อลูกค้า</label><input type="text" id="custName" placeholder="ระบุชื่อ"></div>
             <div class="input-group"><label>อายุ (ปี)</label><input type="number" id="custAge" placeholder="อายุ"></div>
@@ -242,6 +246,11 @@
                 <div style="font-size: 1.1em; color: rgba(255,255,255,0.9); margin-bottom: 10px;">พรีวงเงินที่น่าจะได้รับโดยประมาณ:</div>
                 <div class="estimate-value" id="loan-estimate-val">0</div>
                 <div class="estimate-unit">บาท</div>
+            </div>
+
+            <div class="comment-section">
+                <div class="section-title"><i class="fa-solid fa-comment-dots"></i> Comment / ความคิดเห็นเพิ่มเติม</div>
+                <textarea id="user-comment" class="comment-box" placeholder="ระบุข้อมูลเพิ่มเติมเพื่อให้การพิจารณาสินเชื่อแม่นยำยิ่งขึ้น..."></textarea>
             </div>
         </div>
     </div>
@@ -373,8 +382,6 @@
         document.getElementById('total-closing-sum').innerText = totalClosingSum.toLocaleString();
         document.getElementById('net-capacity-val').innerText = Math.floor(netCapacity).toLocaleString();
 
-        // คำนวณ Estimate พรีวงเงิน
-        // สูตร: (คงเหลือความสามารถผ่อนจริง / 5000) * 1,000,000
         const factor = (Math.max(0, netCapacity) / 5000);
         const roundedFactor = parseFloat(factor.toFixed(4));
         const finalEstimate = roundedFactor * 1000000;
