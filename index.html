@@ -34,7 +34,12 @@
         }
 
         .header-box { display: flex; align-items: center; gap: 25px; margin-bottom: 30px; border-bottom: 1px solid var(--glass-border); padding-bottom: 20px; }
-        .logo-img { max-height: 70px; width: auto; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.3)); }
+        
+        /* สไตล์โลโก้ */
+        .logo-img { max-height: 70px; width: auto; }
+        .logo-screen { filter: drop-shadow(0 4px 10px rgba(0,0,0,0.3)); }
+        .logo-print { display: none; } /* ซ่อนโลโก้พิมพ์ไว้ก่อนในโหมดหน้าจอ */
+
         .header-text { text-align: left; }
         h1 { font-size: clamp(18px, 2.5vw, 26px); margin: 0; text-transform: uppercase; letter-spacing: 2px; color: #ffffff; font-weight: 700; text-shadow: 0 2px 8px rgba(0,0,0,0.5); }
 
@@ -89,20 +94,22 @@
         .btn-pdf { width: 100%; padding: 20px; background: var(--gold-gradient); color: #000; border: none; border-radius: 20px; font-size: 20px; font-weight: bold; cursor: pointer; margin-top: 40px; display: flex; justify-content: center; align-items: center; gap: 12px; }
 
         /* ============================================================
-           PRINT STYLE - ปรับแต่งเพื่อการพิมพ์ออกทางกระดาษ
+           PRINT STYLE - จัดการการพิมพ์
            ============================================================ */
         @media print {
             @page { size: landscape; margin: 0.5cm; }
             body { background: #ffffff !important; color: #000000 !important; padding: 0; }
             .container { box-shadow: none; border: none; max-width: 100% !important; width: 100% !important; padding: 10px; background: #ffffff !important; }
             
-            /* ซ่อนปุ่มต่างๆ ไม่ให้แสดงบนกระดาษ */
+            /* สลับโลโก้สำหรับการพิมพ์ */
+            .logo-screen { display: none !important; }
+            .logo-print { display: block !important; filter: none !important; max-height: 60px; }
+
             .btn-pdf, .add-row-btn, .btn-close-debt, .dsr-selector { display: none !important; }
 
             h1, .section-title, label, .summary-row span, .result-label { color: #000000 !important; text-shadow: none !important; }
             input, textarea, .table-input { color: #000000 !important; border: 1px solid #999999 !important; background: transparent !important; }
             
-            /* กรอบสีทองบางๆ สำหรับส่วนสรุปผล */
             .net-result { 
                 background: transparent !important; border: 1px solid #D4AF37 !important; border-left: 1px solid #D4AF37 !important; 
                 color: #000000 !important; box-shadow: none !important; overflow: visible !important;
@@ -118,7 +125,6 @@
 
             .amount-highlight, .estimate-value { color: #000000 !important; text-shadow: none !important; }
             .highlight-capacity { color: #D4AF37 !important; border-top: 1px solid #eeeeee !important; }
-            .logo-img { filter: none !important; max-height: 60px; }
         }
 
         @media (max-width: 1024px) { .grid-inputs { grid-template-columns: repeat(3, 1fr); } .header-box { flex-direction: column; text-align: center; } }
@@ -129,7 +135,9 @@
 <div class="container">
     <div id="pdf-content">
         <div class="header-box">
-            <img src="https://betofin.genspace.co.th/Logo-Trans.png" alt="Betofin Logo" class="logo-img"> 
+            <img src="https://betofin.genspace.co.th/Logo-Trans.png" alt="Betofin Logo" class="logo-img logo-screen"> 
+            <img src="https://betofin.genspace.co.th/Gen-Black.png" alt="Genspac Logo" class="logo-img logo-print"> 
+            
             <div class="header-text">
                 <h1>Maximum Loan Estimator</h1>
                 <p style="margin: 5px 0 0 0; color: rgba(255,255,255,0.5); font-size: 13px; letter-spacing: 1.5px;">รายงานประเมินศักยภาพทางการเงินระดับพรีเมียม</p>
@@ -189,7 +197,7 @@
         </div>
 
         <div id="result-card" class="card">
-            <span class="card-title" id="res-title" style="font-size: 1.4em; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; margin-bottom: 25px; display: block; color: var(--accent-gold);">CASE: พนักงานทั่วไป</span>
+            <span class="card-title" id="res-title">CASE: พนักงานทั่วไป</span>
             <div style="font-size: 1.2em; color: rgba(255,255,255,0.8);">ภาระหนี้สูงสุดที่รับได้ต่อเดือน: <span style="font-size: 0.7em; opacity: 0.8;">(ก่อนหักภาระที่ต้องจ่าย ในสลิป และ ในบูโร)</span></div>
             <span class="amount-highlight" id="pay-val">0</span>
             <div style="color: var(--accent-gold); font-weight: bold; font-size: 1.1em;">บาท / เดือน</div>
