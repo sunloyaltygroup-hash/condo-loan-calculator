@@ -101,7 +101,7 @@
 
         .net-result { margin-top: 30px; padding: 25px; background: rgba(0,0,0,0.3); border-radius: 25px; border-left: 6px solid var(--accent-gold); text-align: right; }
         .result-row { display: flex; justify-content: flex-end; gap: 30px; margin: 8px 0; align-items: center; }
-        .highlight-capacity { font-size: 1.8em; color: var(--accent-gold); border-top: 1px solid rgba(255,255,255,0.1); margin-top: 10px; padding-top: 15px; }
+        .highlight-capacity { font-size: 1.8em; color: var(--accent-gold); border-top: 1px solid rgba(255,255,255,0.1); margin-top: 15px; padding-top: 15px; }
 
         .estimate-section {
             margin-top: 35px; padding: 30px; border-radius: 25px;
@@ -112,7 +112,6 @@
         .estimate-value { font-size: 56px; font-weight: bold; color: #ffffff; text-shadow: 0 4px 15px rgba(0,0,0,0.5); }
         .estimate-unit { font-size: 20px; color: #FCF6BA; font-weight: bold; margin-top: 5px; }
 
-        /* ส่วน Comment */
         .comment-section { margin-top: 30px; text-align: left; }
         .comment-box { width: 100%; min-height: 120px; resize: vertical; margin-top: 10px; }
 
@@ -190,7 +189,7 @@
 
         <div id="result-card" class="card" style="display: block;">
             <span class="card-title" id="res-title" style="font-size: 1.4em; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; margin-bottom: 25px; display: block; color: var(--accent-gold);">CASE: พนักงานทั่วไป</span>
-            <div style="font-size: 1.2em; color: rgba(255,255,255,0.8);">ภาระหนี้สูงสุดที่รับได้ต่อเดือน:</div>
+            <div style="font-size: 1.2em; color: rgba(255,255,255,0.8);">ภาระหนี้สูงสุดที่รับได้ต่อเดือน: <span style="font-size: 0.7em; opacity: 0.8;">(ก่อนหักภาระที่ต้องจ่าย ในสลิป และ ในบูโร)</span></div>
             <span class="amount-highlight" id="pay-val">0</span>
             <div style="color: var(--accent-gold); font-weight: bold; font-size: 1.1em;">บาท / เดือน</div>
 
@@ -237,7 +236,7 @@
             <div class="net-result">
                 <div class="result-row"><span class="result-label">รวมภาระที่หักในสลิป:</span><span class="result-value"><span id="total-slip-val">0</span> บาท</span></div>
                 <div class="result-row"><span class="result-label">รวมภาระหนี้บูโรรายเดือน:</span><span class="result-value"><span id="total-debt-val">0</span> บาท</span></div>
-                <div class="result-row"><span class="result-label">ยอดรวมเงินที่ต้องใช้ปิดหนี้ (สะสมจากยอดหนี้คงเหลือ):</span><span class="result-value" style="color:#ff8c94;"><span id="total-closing-sum">0</span> บาท</span></div>
+                <div class="result-row"><span class="result-label">ยอดรวมเงินที่ต้องใช้ปิดหนี้:</span><span class="result-value" style="color:#ff8c94;"><span id="total-closing-sum">0</span> บาท</span></div>
                 <div class="result-row highlight-capacity"><span class="result-label" style="color:var(--accent-gold)">คงเหลือความสามารถผ่อนจริง:</span><span class="result-value"><span id="net-capacity-val">0</span> บาท/ด.</span></div>
             </div>
 
